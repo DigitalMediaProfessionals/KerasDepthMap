@@ -1,0 +1,488 @@
+digraph G{
+    subgraph cluster_0{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        cnv1
+        label = "Layer_0"
+    }
+    input_1->cnv1
+
+    subgraph cluster_1{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        cnv1b
+        label = "Layer_1"
+    }
+    cnv1->cnv1b
+
+    subgraph cluster_2{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        cnv2
+        label = "Layer_2"
+    }
+    cnv1b->cnv2
+
+    subgraph cluster_3{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        cnv2b
+        label = "Layer_3"
+    }
+    cnv2->cnv2b
+
+    subgraph cluster_4{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        cnv3
+        label = "Layer_4"
+    }
+    cnv2b->cnv3
+
+    subgraph cluster_5{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        cnv3b
+        label = "Layer_5"
+    }
+    cnv3->cnv3b
+
+    subgraph cluster_6{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        cnv4
+        label = "Layer_6"
+    }
+    cnv3b->cnv4
+
+    subgraph cluster_7{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        cnv4b
+        label = "Layer_7"
+    }
+    cnv4->cnv4b
+
+    subgraph cluster_8{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        cnv5
+        label = "Layer_8"
+    }
+    cnv4b->cnv5
+
+    subgraph cluster_9{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        cnv5b
+        label = "Layer_9"
+    }
+    cnv5->cnv5b
+
+    subgraph cluster_10{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        cnv6
+        label = "Layer_10"
+    }
+    cnv5b->cnv6
+
+    subgraph cluster_11{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        cnv6b
+        label = "Layer_11"
+    }
+    cnv6->cnv6b
+
+    subgraph cluster_12{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        cnv7
+        label = "Layer_12"
+    }
+    cnv6b->cnv7
+
+    subgraph cluster_13{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        cnv7b
+        label = "Layer_13"
+    }
+    cnv7->cnv7b
+
+    subgraph cluster_14{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        up_sampling2d_1
+        label = "Layer_14"
+    }
+    cnv7b->up_sampling2d_1
+
+    subgraph cluster_15{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        upcnv7
+        label = "Layer_15"
+    }
+    up_sampling2d_1->upcnv7
+
+    subgraph cluster_16{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        concatenate_1
+        label = "Layer_16"
+    }
+    upcnv7->concatenate_1
+    cnv6b->concatenate_1
+
+    subgraph cluster_17{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        icnv7
+        label = "Layer_17"
+    }
+    concatenate_1->icnv7
+
+    subgraph cluster_18{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        up_sampling2d_2
+        label = "Layer_18"
+    }
+    icnv7->up_sampling2d_2
+
+    subgraph cluster_19{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        upcnv6
+        label = "Layer_19"
+    }
+    up_sampling2d_2->upcnv6
+
+    subgraph cluster_20{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        concatenate_2
+        label = "Layer_20"
+    }
+    upcnv6->concatenate_2
+    cnv5b->concatenate_2
+
+    subgraph cluster_21{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        icnv6
+        label = "Layer_21"
+    }
+    concatenate_2->icnv6
+
+    subgraph cluster_22{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        up_sampling2d_3
+        label = "Layer_22"
+    }
+    icnv6->up_sampling2d_3
+
+    subgraph cluster_23{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        upcnv5
+        label = "Layer_23"
+    }
+    up_sampling2d_3->upcnv5
+
+    subgraph cluster_24{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        concatenate_3
+        label = "Layer_24"
+    }
+    upcnv5->concatenate_3
+    cnv4b->concatenate_3
+
+    subgraph cluster_25{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        icnv5
+        label = "Layer_25"
+    }
+    concatenate_3->icnv5
+
+    subgraph cluster_26{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        up_sampling2d_4
+        label = "Layer_26"
+    }
+    icnv5->up_sampling2d_4
+
+    subgraph cluster_27{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        upcnv4
+        label = "Layer_27"
+    }
+    up_sampling2d_4->upcnv4
+
+    subgraph cluster_28{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        concatenate_4
+        label = "Layer_28"
+    }
+    upcnv4->concatenate_4
+    cnv3b->concatenate_4
+
+    subgraph cluster_29{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        icnv4
+        label = "Layer_29"
+    }
+    concatenate_4->icnv4
+
+    subgraph cluster_30{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        up_sampling2d_6
+        label = "Layer_30"
+    }
+    icnv4->up_sampling2d_6
+
+    subgraph cluster_31{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        upcnv3
+        label = "Layer_31"
+    }
+    up_sampling2d_6->upcnv3
+
+    subgraph cluster_32{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        disp4
+        label = "Layer_32"
+    }
+    icnv4->disp4
+
+    subgraph cluster_33{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        depthwise_conv2d_1
+        label = "Layer_33"
+    }
+    disp4->depthwise_conv2d_1
+
+    subgraph cluster_34{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        up_sampling2d_5
+        label = "Layer_34"
+    }
+    depthwise_conv2d_1->up_sampling2d_5
+
+    subgraph cluster_35{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        concatenate_5
+        label = "Layer_35"
+    }
+    upcnv3->concatenate_5
+    cnv2b->concatenate_5
+    up_sampling2d_5->concatenate_5
+
+    subgraph cluster_36{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        icnv3
+        label = "Layer_36"
+    }
+    concatenate_5->icnv3
+
+    subgraph cluster_37{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        up_sampling2d_8
+        label = "Layer_37"
+    }
+    icnv3->up_sampling2d_8
+
+    subgraph cluster_38{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        upcnv2
+        label = "Layer_38"
+    }
+    up_sampling2d_8->upcnv2
+
+    subgraph cluster_39{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        disp3
+        label = "Layer_39"
+    }
+    icnv3->disp3
+
+    subgraph cluster_40{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        depthwise_conv2d_2
+        label = "Layer_40"
+    }
+    disp3->depthwise_conv2d_2
+
+    subgraph cluster_41{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        up_sampling2d_7
+        label = "Layer_41"
+    }
+    depthwise_conv2d_2->up_sampling2d_7
+
+    subgraph cluster_42{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        concatenate_6
+        label = "Layer_42"
+    }
+    upcnv2->concatenate_6
+    cnv1b->concatenate_6
+    up_sampling2d_7->concatenate_6
+
+    subgraph cluster_43{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        icnv2
+        label = "Layer_43"
+    }
+    concatenate_6->icnv2
+
+    subgraph cluster_44{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        up_sampling2d_10
+        label = "Layer_44"
+    }
+    icnv2->up_sampling2d_10
+
+    subgraph cluster_45{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        upcnv1
+        label = "Layer_45"
+    }
+    up_sampling2d_10->upcnv1
+
+    subgraph cluster_46{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        disp2
+        label = "Layer_46"
+    }
+    icnv2->disp2
+
+    subgraph cluster_47{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        depthwise_conv2d_3
+        label = "Layer_47"
+    }
+    disp2->depthwise_conv2d_3
+
+    subgraph cluster_48{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        up_sampling2d_9
+        label = "Layer_48"
+    }
+    depthwise_conv2d_3->up_sampling2d_9
+
+    subgraph cluster_49{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        concatenate_7
+        label = "Layer_49"
+    }
+    upcnv1->concatenate_7
+    up_sampling2d_9->concatenate_7
+
+    subgraph cluster_50{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        icnv1
+        label = "Layer_50"
+    }
+    concatenate_7->icnv1
+
+    subgraph cluster_51{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        disp1
+        label = "Layer_51"
+    }
+    icnv1->disp1
+
+    subgraph cluster_52{
+        style = filled;
+        color = lightgrey;
+        node[style = filled,color = white];
+        depthwise_conv2d_4
+        label = "Layer_52"
+    }
+    disp1->depthwise_conv2d_4
+
+}
