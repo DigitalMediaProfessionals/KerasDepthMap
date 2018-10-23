@@ -18,7 +18,7 @@ LFLAGS = -pthread -std=c++11 $(OPT)
 
 DEPS = KerasDepthMap_gen.h imagenet_1000_categories.h
 OBJS = KerasDepthMap_gen.o depthMap.o
-TGT  = ../bin/KerasDepthMap
+TGT  = bin/KerasDepthMap
 
 # %.o: %.cpp $(DEPS)
 %.o: %.cpp

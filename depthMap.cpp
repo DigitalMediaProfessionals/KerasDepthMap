@@ -48,16 +48,18 @@ using namespace std;
 using namespace dmp;
 using namespace util;
 
-#define FILENAME_WEIGHTS "KerasDepthMap_weights.bin"
+#define FILENAME_WEIGHTS "../KerasDepthMap_weights.bin"
 
 #define SCREEN_W (dmp::util::get_screen_width())
 #define SCREEN_H (dmp::util::get_screen_height())
 
-#define IMAGE_W 1241
-#define IMAGE_H 376
+#define IMAGE_W 768
+#define IMAGE_H 256
 
-#define IMAGE_RZ_W 512
+#define IMAGE_RZ_W 384
 #define IMAGE_RZ_H 128
+
+#define OPEN_CV_LOAD_IMG
 
 void frame2rawUInt(COverlayRGB& intput_frm, uint32_t *imgview);
 void opencv2dmp(cv::Mat& input_frm, COverlayRGB& output_frm, bool isColor = true);
@@ -184,7 +186,7 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  const std::string input_image_path = "./images_depthmap/";
+  const std::string input_image_path = "./images/";
   const std::vector<std::string> input_image_suffix = {".png", ".PNG", ".jpg"};
 
   vector<string> image_names =
@@ -203,6 +205,8 @@ int main(int argc, char** argv) {
   bg_overlay.load_ppm_img("fpgatitle");
   COverlayRGB overlay_input(SCREEN_W, SCREEN_H);
   overlay_input.alloc_mem_overlay(IMAGE_RZ_W, IMAGE_RZ_H);
+  COverlayRGB overlay_input_display(SCREEN_W, SCREEN_H);
+  overlay_input_display.alloc_mem_overlay(IMAGE_W, IMAGE_H);
   COverlayRGB overlay_output(SCREEN_W, SCREEN_H);
   overlay_output.alloc_mem_overlay(IMAGE_RZ_W, IMAGE_RZ_H);
 
@@ -257,7 +261,7 @@ int main(int argc, char** argv) {
       COverlayRGB::calculate_boundary_text(text_conv, text_size, w, h);
 
       int x = ((SCREEN_W - w) / 2);
-      int y = 7*SCREEN_H/8-100;
+      int y = 8*SCREEN_H/9+10;
 
       COverlayRGB overlay_time(SCREEN_W, SCREEN_H);
       overlay_time.alloc_mem_overlay(w, h);
@@ -273,7 +277,7 @@ int main(int argc, char** argv) {
         clock_t start = clock();
 
         // The values returned from get_final_output() is still transposed (height first) format.
-        // So it is actually a width=128, height=512 image
+        // So it is actually a width=128, height=384 image
         // need to transpose the output before you can compare to the Keras output.
         for(int y = 0 ; y < IMAGE_RZ_H; y++)
           for(int x = 0 ; x < IMAGE_RZ_W; x++)
@@ -285,9 +289,9 @@ int main(int argc, char** argv) {
         cv::Mat matDepth_8UC3, matDepth_color;
         cv::cvtColor(matDepth_8UC1,matDepth_8UC3,CV_GRAY2RGB);
         cv::applyColorMap(matDepth_8UC3, matDepth_color, cv::ColormapTypes::COLORMAP_JET);
-        #ifdef DEPTHMAP_SAVED
         cv::Mat matDepth_color_resized;
         cv::resize( matDepth_color , matDepth_color_resized , cv::Size( IMAGE_W, IMAGE_H ), 0, 0, CV_INTER_LINEAR);
+        #ifdef DEPTHMAP_SAVED
         cv::putText( matDepth_color_resized,
                      text_conv,
                      cv::Point(10,18),                  // Coordinates
@@ -297,7 +301,7 @@ int main(int argc, char** argv) {
                      1 );                               // Line Thickness (Optional)
         cv::imwrite( "images_depth/" + int_to_str(image_nr-1,5) + ".png", matDepth_color_resized );
         #endif
-        opencv2dmp( matDepth_color, overlay_output );
+        opencv2dmp( matDepth_color_resized, overlay_output );
 
         clock_t stop = clock();
 
@@ -315,12 +319,12 @@ int main(int argc, char** argv) {
         dumptext.close();
         #endif
 
-        int x = ((SCREEN_W - IMAGE_RZ_W) / 2);
-        int y = ((SCREEN_H - IMAGE_RZ_H) / 2)-80;
-        overlay_input.print_to_display(x, y);
+        int x = ((SCREEN_W - IMAGE_W) / 2);
+        int y = ((SCREEN_H - IMAGE_H) / 2)-110;
+        overlay_input_display.print_to_display(x, y);
 
-        x = ((SCREEN_W - IMAGE_RZ_W) / 2);
-        y = ((SCREEN_H + IMAGE_RZ_H) / 2)-80;
+        x = ((SCREEN_W - IMAGE_W) / 2);
+        y = ((SCREEN_H + IMAGE_H) / 2)-110;
         overlay_output.print_to_display(x, y);
 
         dmp::util::swap_buffer();
@@ -369,11 +373,12 @@ int main(int argc, char** argv) {
         #ifdef OPEN_CV_LOAD_IMG
         // Read input image from jpg file
         cv::Mat colorMat = cv::imread(input_image_path + image_names[image_nr], CV_LOAD_IMAGE_COLOR);
-        // cv::Mat resizedMat = colorMat;
-        // Resize image into 512x128 before feeding through network 
-        // cv::resize( colorMat , resizedMat , cv::Size( IMAGE_RZ_W, IMAGE_RZ_H ), 0, 0, CV_INTER_LINEAR);
-        // printf("Resized image %dx%d into %dx%d\n", colorMat.cols, colorMat.rows, IMAGE_RZ_W, IMAGE_RZ_H);
-        opencv2dmp( colorMat, overlay_input );
+        cv::Mat resizedMat = colorMat;
+        // Resize image into 384x128 before feeding through network 
+        cv::resize( colorMat , resizedMat , cv::Size( IMAGE_RZ_W, IMAGE_RZ_H ), 0, 0, CV_INTER_LINEAR);
+        printf("Resized image %dx%d into %dx%d\n", colorMat.cols, colorMat.rows, IMAGE_RZ_W, IMAGE_RZ_H);
+        opencv2dmp( colorMat, overlay_input_display );
+        opencv2dmp( resizedMat, overlay_input );
         frame2rawUInt( overlay_input, imgView );
         #else
         dmp::util::decode_jpg_file(input_image_path + image_names[image_nr],
