@@ -133,7 +133,7 @@ void CKerasDepthMap::Layer_0() {
   //->: activation_1
   conf.run[0].m = 32;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 7;  // Filter Width and Height
+  conf.run[0].p = 0x7;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 0;
@@ -145,7 +145,7 @@ void CKerasDepthMap::Layer_0() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -210,7 +210,7 @@ void CKerasDepthMap::Layer_1() {
   //->: activation_2
   conf.run[0].m = 32;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 7;  // Filter Width and Height
+  conf.run[0].p = 0x7;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 13888;
@@ -222,7 +222,7 @@ void CKerasDepthMap::Layer_1() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -287,7 +287,7 @@ void CKerasDepthMap::Layer_2() {
   //->: activation_3
   conf.run[0].m = 64;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 5;  // Filter Width and Height
+  conf.run[0].p = 0x5;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 161408;
@@ -299,7 +299,7 @@ void CKerasDepthMap::Layer_2() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -364,7 +364,7 @@ void CKerasDepthMap::Layer_3() {
   //->: activation_4
   conf.run[0].m = 64;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 5;  // Filter Width and Height
+  conf.run[0].p = 0x5;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 308992;
@@ -376,7 +376,7 @@ void CKerasDepthMap::Layer_3() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -441,7 +441,7 @@ void CKerasDepthMap::Layer_4() {
   //->: activation_5
   conf.run[0].m = 128;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 604032;
@@ -453,7 +453,7 @@ void CKerasDepthMap::Layer_4() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -518,7 +518,7 @@ void CKerasDepthMap::Layer_5() {
   //->: activation_6
   conf.run[0].m = 128;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 751744;
@@ -530,7 +530,7 @@ void CKerasDepthMap::Layer_5() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -595,7 +595,7 @@ void CKerasDepthMap::Layer_6() {
   //->: activation_7
   conf.run[0].m = 256;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 1046912;
@@ -607,7 +607,7 @@ void CKerasDepthMap::Layer_6() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -672,7 +672,7 @@ void CKerasDepthMap::Layer_7() {
   //->: activation_8
   conf.run[0].m = 256;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 1637248;
@@ -684,7 +684,7 @@ void CKerasDepthMap::Layer_7() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -749,7 +749,7 @@ void CKerasDepthMap::Layer_8() {
   //->: activation_9
   conf.run[0].m = 512;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 2817408;
@@ -761,7 +761,7 @@ void CKerasDepthMap::Layer_8() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -826,7 +826,7 @@ void CKerasDepthMap::Layer_9() {
   //->: activation_10
   conf.run[0].m = 512;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 5177728;
@@ -838,7 +838,7 @@ void CKerasDepthMap::Layer_9() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -903,7 +903,7 @@ void CKerasDepthMap::Layer_10() {
   //->: activation_11
   conf.run[0].m = 512;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 9897344;
@@ -915,7 +915,7 @@ void CKerasDepthMap::Layer_10() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -980,7 +980,7 @@ void CKerasDepthMap::Layer_11() {
   //->: activation_12
   conf.run[0].m = 512;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 14616960;
@@ -992,7 +992,7 @@ void CKerasDepthMap::Layer_11() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -1057,7 +1057,7 @@ void CKerasDepthMap::Layer_12() {
   //->: activation_13
   conf.run[0].m = 512;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 19336576;
@@ -1069,7 +1069,7 @@ void CKerasDepthMap::Layer_12() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -1134,7 +1134,7 @@ void CKerasDepthMap::Layer_13() {
   //->: activation_14
   conf.run[0].m = 512;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 24056192;
@@ -1146,7 +1146,7 @@ void CKerasDepthMap::Layer_13() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -1205,7 +1205,7 @@ void CKerasDepthMap::Layer_14() {
   //->: up_sampling2d_1
   conf.run[0].m = 512;  // Output Channels
   conf.run[0].conv_enable = 0;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 1;  // Filter Width and Height
+  conf.run[0].p = 0x1;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 28775808;
@@ -1217,7 +1217,7 @@ void CKerasDepthMap::Layer_14() {
   conf.run[0].pool_size = 0x202;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 0;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -1282,7 +1282,7 @@ void CKerasDepthMap::Layer_15() {
   //->: activation_15
   conf.run[0].m = 512;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 28775808;
@@ -1294,7 +1294,7 @@ void CKerasDepthMap::Layer_15() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -1380,7 +1380,7 @@ void CKerasDepthMap::Layer_17() {
   //->: activation_16
   conf.run[0].m = 512;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 33495424;
@@ -1392,7 +1392,7 @@ void CKerasDepthMap::Layer_17() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -1451,7 +1451,7 @@ void CKerasDepthMap::Layer_18() {
   //->: up_sampling2d_2
   conf.run[0].m = 512;  // Output Channels
   conf.run[0].conv_enable = 0;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 1;  // Filter Width and Height
+  conf.run[0].p = 0x1;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 42933632;
@@ -1463,7 +1463,7 @@ void CKerasDepthMap::Layer_18() {
   conf.run[0].pool_size = 0x202;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 0;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -1528,7 +1528,7 @@ void CKerasDepthMap::Layer_19() {
   //->: activation_17
   conf.run[0].m = 512;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 42933632;
@@ -1540,7 +1540,7 @@ void CKerasDepthMap::Layer_19() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -1626,7 +1626,7 @@ void CKerasDepthMap::Layer_21() {
   //->: activation_18
   conf.run[0].m = 512;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 47653248;
@@ -1638,7 +1638,7 @@ void CKerasDepthMap::Layer_21() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -1697,7 +1697,7 @@ void CKerasDepthMap::Layer_22() {
   //->: up_sampling2d_3
   conf.run[0].m = 512;  // Output Channels
   conf.run[0].conv_enable = 0;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 1;  // Filter Width and Height
+  conf.run[0].p = 0x1;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 57091456;
@@ -1709,7 +1709,7 @@ void CKerasDepthMap::Layer_22() {
   conf.run[0].pool_size = 0x202;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 0;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -1774,7 +1774,7 @@ void CKerasDepthMap::Layer_23() {
   //->: activation_19
   conf.run[0].m = 256;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 57091456;
@@ -1786,7 +1786,7 @@ void CKerasDepthMap::Layer_23() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -1872,7 +1872,7 @@ void CKerasDepthMap::Layer_25() {
   //->: activation_20
   conf.run[0].m = 256;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 59451264;
@@ -1884,7 +1884,7 @@ void CKerasDepthMap::Layer_25() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -1943,7 +1943,7 @@ void CKerasDepthMap::Layer_26() {
   //->: up_sampling2d_4
   conf.run[0].m = 256;  // Output Channels
   conf.run[0].conv_enable = 0;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 1;  // Filter Width and Height
+  conf.run[0].p = 0x1;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 61811072;
@@ -1955,7 +1955,7 @@ void CKerasDepthMap::Layer_26() {
   conf.run[0].pool_size = 0x202;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 0;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -2020,7 +2020,7 @@ void CKerasDepthMap::Layer_27() {
   //->: activation_21
   conf.run[0].m = 128;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 61811072;
@@ -2032,7 +2032,7 @@ void CKerasDepthMap::Layer_27() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -2118,7 +2118,7 @@ void CKerasDepthMap::Layer_29() {
   //->: activation_22
   conf.run[0].m = 128;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 62401152;
@@ -2130,7 +2130,7 @@ void CKerasDepthMap::Layer_29() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -2189,7 +2189,7 @@ void CKerasDepthMap::Layer_30() {
   //->: up_sampling2d_6
   conf.run[0].m = 128;  // Output Channels
   conf.run[0].conv_enable = 0;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 1;  // Filter Width and Height
+  conf.run[0].p = 0x1;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 62991232;
@@ -2201,7 +2201,7 @@ void CKerasDepthMap::Layer_30() {
   conf.run[0].pool_size = 0x202;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 0;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -2266,7 +2266,7 @@ void CKerasDepthMap::Layer_31() {
   //->: activation_24
   conf.run[0].m = 64;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 62991232;
@@ -2278,7 +2278,7 @@ void CKerasDepthMap::Layer_31() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -2339,7 +2339,7 @@ void CKerasDepthMap::Layer_32() {
   //->: activation_23
   conf.run[0].m = 1;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63138816;
@@ -2351,7 +2351,7 @@ void CKerasDepthMap::Layer_32() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 3;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -2410,7 +2410,7 @@ void CKerasDepthMap::Layer_33() {
   //->: depthwise_conv2d_1
   conf.run[0].m = 1;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 1;  // Filter Width and Height
+  conf.run[0].p = 0x1;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63141136;
@@ -2422,7 +2422,7 @@ void CKerasDepthMap::Layer_33() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 0;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -2481,7 +2481,7 @@ void CKerasDepthMap::Layer_34() {
   //->: up_sampling2d_5
   conf.run[0].m = 1;  // Output Channels
   conf.run[0].conv_enable = 0;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 1;  // Filter Width and Height
+  conf.run[0].p = 0x1;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63141296;
@@ -2493,7 +2493,7 @@ void CKerasDepthMap::Layer_34() {
   conf.run[0].pool_size = 0x202;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 0;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -2579,7 +2579,7 @@ void CKerasDepthMap::Layer_36() {
   //->: activation_25
   conf.run[0].m = 64;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63141296;
@@ -2591,7 +2591,7 @@ void CKerasDepthMap::Layer_36() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -2650,7 +2650,7 @@ void CKerasDepthMap::Layer_37() {
   //->: up_sampling2d_8
   conf.run[0].m = 64;  // Output Channels
   conf.run[0].conv_enable = 0;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 1;  // Filter Width and Height
+  conf.run[0].p = 0x1;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63298096;
@@ -2662,7 +2662,7 @@ void CKerasDepthMap::Layer_37() {
   conf.run[0].pool_size = 0x202;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 0;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -2727,7 +2727,7 @@ void CKerasDepthMap::Layer_38() {
   //->: activation_27
   conf.run[0].m = 32;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63298096;
@@ -2739,7 +2739,7 @@ void CKerasDepthMap::Layer_38() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -2800,7 +2800,7 @@ void CKerasDepthMap::Layer_39() {
   //->: activation_26
   conf.run[0].m = 1;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63335024;
@@ -2812,7 +2812,7 @@ void CKerasDepthMap::Layer_39() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 3;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -2871,7 +2871,7 @@ void CKerasDepthMap::Layer_40() {
   //->: depthwise_conv2d_2
   conf.run[0].m = 1;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 1;  // Filter Width and Height
+  conf.run[0].p = 0x1;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63336192;
@@ -2883,7 +2883,7 @@ void CKerasDepthMap::Layer_40() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 0;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -2942,7 +2942,7 @@ void CKerasDepthMap::Layer_41() {
   //->: up_sampling2d_7
   conf.run[0].m = 1;  // Output Channels
   conf.run[0].conv_enable = 0;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 1;  // Filter Width and Height
+  conf.run[0].p = 0x1;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63336352;
@@ -2954,7 +2954,7 @@ void CKerasDepthMap::Layer_41() {
   conf.run[0].pool_size = 0x202;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 0;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -3040,7 +3040,7 @@ void CKerasDepthMap::Layer_43() {
   //->: activation_28
   conf.run[0].m = 32;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63336352;
@@ -3052,7 +3052,7 @@ void CKerasDepthMap::Layer_43() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -3111,7 +3111,7 @@ void CKerasDepthMap::Layer_44() {
   //->: up_sampling2d_10
   conf.run[0].m = 32;  // Output Channels
   conf.run[0].conv_enable = 0;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 1;  // Filter Width and Height
+  conf.run[0].p = 0x1;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63377888;
@@ -3123,7 +3123,7 @@ void CKerasDepthMap::Layer_44() {
   conf.run[0].pool_size = 0x202;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 0;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -3188,7 +3188,7 @@ void CKerasDepthMap::Layer_45() {
   //->: activation_30
   conf.run[0].m = 16;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63377888;
@@ -3200,7 +3200,7 @@ void CKerasDepthMap::Layer_45() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -3261,7 +3261,7 @@ void CKerasDepthMap::Layer_46() {
   //->: activation_29
   conf.run[0].m = 1;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63387136;
@@ -3273,7 +3273,7 @@ void CKerasDepthMap::Layer_46() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 3;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -3332,7 +3332,7 @@ void CKerasDepthMap::Layer_47() {
   //->: depthwise_conv2d_3
   conf.run[0].m = 1;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 1;  // Filter Width and Height
+  conf.run[0].p = 0x1;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63387728;
@@ -3344,7 +3344,7 @@ void CKerasDepthMap::Layer_47() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 0;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -3403,7 +3403,7 @@ void CKerasDepthMap::Layer_48() {
   //->: up_sampling2d_9
   conf.run[0].m = 1;  // Output Channels
   conf.run[0].conv_enable = 0;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 1;  // Filter Width and Height
+  conf.run[0].p = 0x1;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63387888;
@@ -3415,7 +3415,7 @@ void CKerasDepthMap::Layer_48() {
   conf.run[0].pool_size = 0x202;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 0;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -3501,7 +3501,7 @@ void CKerasDepthMap::Layer_50() {
   //->: activation_31
   conf.run[0].m = 16;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63387888;
@@ -3513,7 +3513,7 @@ void CKerasDepthMap::Layer_50() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 2;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -3574,7 +3574,7 @@ void CKerasDepthMap::Layer_51() {
   //->: activation_32
   conf.run[0].m = 1;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 3;  // Filter Width and Height
+  conf.run[0].p = 0x3;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63394832;
@@ -3586,7 +3586,7 @@ void CKerasDepthMap::Layer_51() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 3;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)
@@ -3645,7 +3645,7 @@ void CKerasDepthMap::Layer_52() {
   //->: depthwise_conv2d_4
   conf.run[0].m = 1;  // Output Channels
   conf.run[0].conv_enable = 1;  // 1 = Enabled, 0 = Disabled
-  conf.run[0].p = 1;  // Filter Width and Height
+  conf.run[0].p = 0x1;  // Filter Width and Height
   conf.run[0].pz = 1;  // Filter Depth
   conf.run[0].weight_buf.mem = weights_mem_;
   conf.run[0].weight_buf.offs = 63395136;
@@ -3657,7 +3657,7 @@ void CKerasDepthMap::Layer_52() {
   conf.run[0].pool_size = 0x0;  // bits [7:0] = width, bits [15:8] = height
   conf.run[0].pool_stride = 0x101;  // bits [7:0] = X stride, bits [15:8] = Y stride
   conf.run[0].pool_pad = 0x0;  // bits [7:0] = left padding, bits [15:8] = right padding, bits [23:16] = top padding, bits [31:24] = bottom padding
-  conf.run[0].pool_avg_param = 0x0;  // Must be set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
+  conf.run[0].pool_avg_param = 0x0;  // Usually set to 1/pool_size^2 in FP16 format when using average pooling (average pooling assumes square size)
   conf.run[0].actfunc = 0;  // Activation Function: 0 = None, 1 = Tanh, 2 = Leaky ReLU, 3 = Sigmoid, 4 = PReLU, 5 = ELU, 6 = ReLU6
   conf.run[0].actfunc_param = 0x0;  // Leaky ReLU parameter (NOTE: 0x2E66 is 0.1 in FP16)
   conf.run[0].rectifi_en = 0;  // Rectification, i.e. max(0, x) (NOTE: Can be applied after non-ReLU activation function)

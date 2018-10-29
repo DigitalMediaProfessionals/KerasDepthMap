@@ -59,8 +59,6 @@ using namespace util;
 #define IMAGE_RZ_W 384
 #define IMAGE_RZ_H 128
 
-#define OPEN_CV_LOAD_IMG
-
 void frame2rawUInt(COverlayRGB& intput_frm, uint32_t *imgview);
 void opencv2dmp(cv::Mat& input_frm, COverlayRGB& output_frm, bool isColor = true);
 
@@ -72,7 +70,7 @@ CKerasDepthMap network;
 // Frame counter
 uint32_t fc = 0;
 
-uint32_t imgView[IMAGE_RZ_W * IMAGE_RZ_H];
+uint32_t imgView[IMAGE_W * IMAGE_H];
 __fp16 imgProc[IMAGE_RZ_W * IMAGE_RZ_H * 3];
 
 // 2ND THREAD FOR HW CONTROL
@@ -204,11 +202,9 @@ int main(int argc, char** argv) {
   bg_overlay.alloc_mem_overlay(SCREEN_W, SCREEN_H);
   bg_overlay.load_ppm_img("fpgatitle");
   COverlayRGB overlay_input(SCREEN_W, SCREEN_H);
-  overlay_input.alloc_mem_overlay(IMAGE_RZ_W, IMAGE_RZ_H);
-  COverlayRGB overlay_input_display(SCREEN_W, SCREEN_H);
-  overlay_input_display.alloc_mem_overlay(IMAGE_W, IMAGE_H);
+  overlay_input.alloc_mem_overlay(IMAGE_W, IMAGE_H);
   COverlayRGB overlay_output(SCREEN_W, SCREEN_H);
-  overlay_output.alloc_mem_overlay(IMAGE_RZ_W, IMAGE_RZ_H);
+  overlay_output.alloc_mem_overlay(IMAGE_W, IMAGE_H);
 
   network.Verbose(0);
   if (!network.Initialize()) {
@@ -321,7 +317,7 @@ int main(int argc, char** argv) {
 
         int x = ((SCREEN_W - IMAGE_W) / 2);
         int y = ((SCREEN_H - IMAGE_H) / 2)-110;
-        overlay_input_display.print_to_display(x, y);
+        overlay_input.print_to_display(x, y);
 
         x = ((SCREEN_W - IMAGE_W) / 2);
         y = ((SCREEN_H + IMAGE_H) / 2)-110;
@@ -365,27 +361,21 @@ int main(int argc, char** argv) {
         #endif
 
         int key = getchar();
-        if(key == 27)
-          break;
+        switch(key){
+          case 27: // ESC
+            exit_code = 0;
+            break;
+          case 32: // SPACE
+            pause = !pause;
+            break;
+        }
       }
 
       if (!pause) {
-        #ifdef OPEN_CV_LOAD_IMG
-        // Read input image from jpg file
-        cv::Mat colorMat = cv::imread(input_image_path + image_names[image_nr], CV_LOAD_IMAGE_COLOR);
-        cv::Mat resizedMat = colorMat;
-        // Resize image into 384x128 before feeding through network 
-        cv::resize( colorMat , resizedMat , cv::Size( IMAGE_RZ_W, IMAGE_RZ_H ), 0, 0, CV_INTER_LINEAR);
-        printf("Resized image %dx%d into %dx%d\n", colorMat.cols, colorMat.rows, IMAGE_RZ_W, IMAGE_RZ_H);
-        opencv2dmp( colorMat, overlay_input_display );
-        opencv2dmp( resizedMat, overlay_input );
-        frame2rawUInt( overlay_input, imgView );
-        #else
         dmp::util::decode_jpg_file(input_image_path + image_names[image_nr],
-                                   imgView, IMAGE_RZ_W, IMAGE_RZ_H);
-        overlay_input.convert_to_overlay_pixel_format(imgView, IMAGE_RZ_W*IMAGE_RZ_H);
-        #endif
-        dmp::util::preproc_image(imgView, imgProc, IMAGE_RZ_W, IMAGE_RZ_H, 0, 0, 0, 0.003921569, true);
+                                   imgView, IMAGE_W, IMAGE_H);
+        overlay_input.convert_to_overlay_pixel_format(imgView, IMAGE_W*IMAGE_H);
+        dmp::util::preproc_image(imgView, imgProc, IMAGE_W, IMAGE_H, IMAGE_RZ_W, IMAGE_RZ_H, 0, 0, 0, 1.0 / 255.0, true);
         printf("preproc_image done\n");
 
         if (image_nr == num_images - 1) {
