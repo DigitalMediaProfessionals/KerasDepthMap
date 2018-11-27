@@ -181,7 +181,7 @@ int main(int argc, char** argv) {
 
 /**
  * @brief Convert opencv image format to dmp board frame format
- * 
+ *
  * @param input_frm      opencv image format
  * @param output_frm dmp board image format
  * @param isColor        input_fram is color or grayscale
