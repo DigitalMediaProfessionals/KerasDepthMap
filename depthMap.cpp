@@ -37,21 +37,17 @@
 #include <opencv2/imgcodecs/imgcodecs.hpp>
 #include <ctime>
 
-#include "imagenet_1000_categories.h"
-
+#include "KerasDepthMap_gen.h"
 #include "util_draw.h"
 #include "util_input.h"
-
-#include "KerasDepthMap_gen.h"
+#include "demo_common.h"
 
 using namespace std;
 using namespace dmp;
 using namespace util;
 
-#define FILENAME_WEIGHTS "../KerasDepthMap_weights.bin"
-
-#define SCREEN_W (dmp::util::get_screen_width())
-#define SCREEN_H (dmp::util::get_screen_height())
+#define SCREEN_W (get_screen_width())
+#define SCREEN_H (get_screen_height())
 
 #define IMAGE_W 768
 #define IMAGE_H 256
@@ -59,153 +55,36 @@ using namespace util;
 #define IMAGE_RZ_W 384
 #define IMAGE_RZ_H 128
 
-void frame2rawUInt(COverlayRGB& intput_frm, uint32_t *imgview);
-void opencv2dmp(cv::Mat& input_frm, COverlayRGB& output_frm, bool isColor = true);
+#define FILENAME_WEIGHTS "../KerasDepthMap_weights.bin"
 
+// Define CNN network model object
 CKerasDepthMap network;
 
-// #define DUMP_OUTPUT
-// #define DEPTHMAP_SAVED
-
-// Frame counter
-uint32_t fc = 0;
-
+// Buffer for decoded image data
 uint32_t imgView[IMAGE_W * IMAGE_H];
+// Buffer for pre-processed image data
 __fp16 imgProc[IMAGE_RZ_W * IMAGE_RZ_H * 3];
 
-// 2ND THREAD FOR HW CONTROL
-
-volatile uint64_t sync_cnn_in = 0;
-volatile uint64_t sync_cnn_out = 0;
-
-volatile int conv_time_tot = 0;
-
-volatile bool g_should_stop = false;
-
-void* hwacc_thread_func(void* targ) {
-  while (!g_should_stop) {
-    if (sync_cnn_in == sync_cnn_out) {
-      usleep(1000);  // sleep 1 ms
-      continue;
-    }
-
-    network.RunNetwork();
-
-    conv_time_tot = network.get_conv_usec();
-
-    sync_cnn_out++;
-  }
-  return NULL;
-}
-
-/**
- * @brief get datetime as string
- * 
- * @ret   current datetime as string
- */
-std::string DateTime(){
-  time_t rawtime;
-  struct tm * timeinfo;
-  char buffer[80];
-
-  time (&rawtime);
-  timeinfo = localtime(&rawtime);
-
-  strftime(buffer,sizeof(buffer),"%d%m%Y_%H%M%S",timeinfo);
-  std::string str(buffer);
-
-  return str;
-}
-
-void print_demo_title(COverlayRGB &bg_overlay){
-  unsigned text_size = 30;
-  string font_file = "font/NotoSerif-Black.ttf";
-  string text = "Depth Map Estimation";
-  unsigned w = 0;
-  unsigned h = 0;
-  
-  COverlayRGB::calculate_boundary_text_with_font(font_file, text, text_size, w, h);
-  int x = ((SCREEN_W - w) / 2);
-  int y = 25;
-  COverlayRGB bg_text(SCREEN_W, SCREEN_H);
-  bg_text.alloc_mem_overlay(w, h);
-  bg_text.copy_overlay(bg_overlay, x, y);
-  bg_text.set_text_with_font(font_file, text, 0, 3*h/4, text_size, 0x00ffffff);
-  bg_text.print_to_display(x, y);
-
-  
-  text = "FPGA Demonstration";
-  COverlayRGB::calculate_boundary_text_with_font(font_file, text, text_size, w, h);
-  x = ((SCREEN_W - w) / 2);
-  y = 65;
-  bg_text.delete_overlay();
-  bg_text.alloc_mem_overlay(w, h);
-  bg_text.copy_overlay(bg_overlay, x, y);
-  bg_text.set_text_with_font(font_file, text, 0, 3*h/4, text_size, 0x00ffffff);
-  bg_text.print_to_display(x, y);
-
-  text_size = 11;
-  text = "Copyright 2018. Digital Media Professionals Inc.";
-  COverlayRGB::calculate_boundary_text_with_font(font_file, text, text_size, w, h);
-  x = 5;
-  y = SCREEN_H - 20;
-  bg_text.delete_overlay();
-  bg_text.alloc_mem_overlay(w, h);
-  bg_text.copy_overlay(bg_overlay, x, y);
-  bg_text.set_text_with_font(font_file, text, 0, 3*h/4, text_size, 0x00ffffff);
-  bg_text.print_to_display(x, y);
-}
-
-/**
- * @brief convert int to string with 0 numbers padding
- * 
- * @param in          int number
- * @param len         string len
- * 
- * @ret   converted string
- */
-string int_to_str(int in, int len){
-    int in_len = 1;
-    int in_tmp = in/10;
-    while(in_tmp>0){
-      in_len++;
-      in_tmp /= 10;
-    }
-    string s = to_string(in);
-    if(len>in_len){
-      s = string( len-in_len, '0').append(s);
-    }
-    return s;
-}
+// Pre-processing function
+void opencv2dmp(cv::Mat& input_frm, COverlayRGB& output_frm, bool isColor = true);
 
 int main(int argc, char** argv) {
-  if (!dmp::util::init_fb()) {
-    fprintf(stderr, "dmp::util::init_fb() failed\n");
+  // Initialize FB
+  if (!init_fb()) {
+    cout << "init_fb() failed." << endl;
     return 1;
   }
 
-  const std::string input_image_path = "./images/";
-  const std::vector<std::string> input_image_suffix = {".png", ".PNG", ".jpg"};
-
-  vector<string> image_names =
-      dmp::util::get_input_image_names(input_image_path, input_image_suffix);
+  // Get input images filenames
+  vector<string> image_names;
+  get_jpeg_image_names("./images/", image_names);
   int num_images = image_names.size();
   if (num_images == 0) {
     cout << "No input images." << endl;
     return 1;
   }
 
-  std::vector<float> networkOutput;
-  std::vector<float> networkOutput_transposed(IMAGE_RZ_H*IMAGE_RZ_W);
-
-  COverlayRGB bg_overlay(SCREEN_W, SCREEN_H);
-  bg_overlay.alloc_mem_overlay(SCREEN_W, SCREEN_H);
-  bg_overlay.load_ppm_img("fpgatitle");
-  COverlayRGB overlay_input(SCREEN_W, SCREEN_H);
-  overlay_input.alloc_mem_overlay(IMAGE_W, IMAGE_H);
-  COverlayRGB overlay_output(SCREEN_W, SCREEN_H);
-  overlay_output.alloc_mem_overlay(IMAGE_W, IMAGE_H);
-
+  // Initialize network object
   network.Verbose(0);
   if (!network.Initialize()) {
     return -1;
@@ -217,187 +96,85 @@ int main(int argc, char** argv) {
     return -1;
   }
 
-  #ifdef DUMP_OUTPUT
-  network.WantLayerOutputs();
-  #endif
-
-  string conv_freq, fc_freq;
+  // Get HW module frequency
+  string conv_freq;
   conv_freq = std::to_string(network.get_dv_info().conv_freq);
-  fc_freq = std::to_string(network.get_dv_info().fc_freq);
 
-  void* ddr_buf_a_cpu = network.get_network_input_addr_cpu();
+  // Create background, image, and output overlay
+  COverlayRGB bg_overlay(SCREEN_W, SCREEN_H);
+  bg_overlay.alloc_mem_overlay(SCREEN_W, SCREEN_H);
+  bg_overlay.load_ppm_img("fpgatitle");
+  COverlayRGB overlay_input(SCREEN_W, SCREEN_H);
+  overlay_input.alloc_mem_overlay(IMAGE_W, IMAGE_H);
+  COverlayRGB overlay_output(SCREEN_W, SCREEN_H);
+  overlay_output.alloc_mem_overlay(IMAGE_W, IMAGE_H);
 
-  int exit_code = -1;
-
-  int image_nr = 0;
-
-  bool pause = false;
-
-  pthread_t hwacc_thread;
-  pthread_create(&hwacc_thread, NULL, hwacc_thread_func, NULL);
-
-  while (exit_code == -1) {
-    // Static Images
-    if (fc < 2) {
-      bg_overlay.print_to_display(0, 0);
-      print_demo_title(bg_overlay);
-      dmp::util::swap_buffer();
-      fc++;  // Frame Counter
-      continue;
-    }
-
-    string text_conv;
-    // HW processing times
-    if (conv_time_tot != 0) {
-      text_conv = COverlayRGB::convert_time_to_text("Convolution (" + conv_freq + " MHz HW ACC)      : ", conv_time_tot);
-      unsigned text_size = 14;
-
-      unsigned w = 0;
-      unsigned h = 0;
-      COverlayRGB::calculate_boundary_text(text_conv, text_size, w, h);
-
-      int x = ((SCREEN_W - w) / 2);
-      int y = 8*SCREEN_H/9+10;
-
-      COverlayRGB overlay_time(SCREEN_W, SCREEN_H);
-      overlay_time.alloc_mem_overlay(w, h);
-      overlay_time.copy_overlay(bg_overlay,x, y);
-      overlay_time.set_text(0, 0, text_conv, text_size, 0x00f4419d);
-      overlay_time.print_to_display(x, y);
-    }
-
-    if (sync_cnn_out == sync_cnn_in) {
-      if (sync_cnn_out != 0) {
-        network.get_final_output(networkOutput);
-
-        clock_t start = clock();
-
-        // The values returned from get_final_output() is still transposed (height first) format.
-        // So it is actually a width=128, height=384 image
-        // need to transpose the output before you can compare to the Keras output.
-        for(int y = 0 ; y < IMAGE_RZ_H; y++)
-          for(int x = 0 ; x < IMAGE_RZ_W; x++)
-            networkOutput_transposed[x+y*IMAGE_RZ_W] = networkOutput[y+x*IMAGE_RZ_H]*255;
-
-        cv::Mat matDepth(IMAGE_RZ_H, IMAGE_RZ_W, CV_32FC1, networkOutput_transposed.data());
-        cv::Mat matDepth_8UC1;
-        matDepth.convertTo(matDepth_8UC1, CV_8U);
-        cv::Mat matDepth_8UC3, matDepth_color;
-        cv::cvtColor(matDepth_8UC1,matDepth_8UC3,CV_GRAY2RGB);
-        cv::applyColorMap(matDepth_8UC3, matDepth_color, cv::ColormapTypes::COLORMAP_JET);
-        cv::Mat matDepth_color_resized;
-        cv::resize( matDepth_color , matDepth_color_resized , cv::Size( IMAGE_W, IMAGE_H ), 0, 0, CV_INTER_LINEAR);
-        #ifdef DEPTHMAP_SAVED
-        cv::putText( matDepth_color_resized,
-                     text_conv,
-                     cv::Point(10,18),                  // Coordinates
-                     cv::FONT_HERSHEY_COMPLEX_SMALL,    // Font
-                     1,                                 // Scale. 2.0 = 2x bigger
-                     cv::Scalar(0,0,0),                 // BGR Color
-                     1 );                               // Line Thickness (Optional)
-        cv::imwrite( "images_depth/" + int_to_str(image_nr-1,5) + ".png", matDepth_color_resized );
-        #endif
-        opencv2dmp( matDepth_color_resized, overlay_output );
-
-        clock_t stop = clock();
-
-        double elapsed = (double)(stop - start) * 1000.0 / CLOCKS_PER_SEC;
-        printf("Transpose image and opencv processing in ms: %f\n", elapsed);
-
-        #ifdef DUMP_OUTPUT
-        std::string dt = DateTime();
-        ofstream dumptext;
-        dumptext.open ("dumptext_" + dt +".txt");
-        // for(unsigned int i = 0; i < network.get_layer(52).output.size(); i++)
-        //     dumptext << network.get_layer(52).output[i] << " ";
-        for(unsigned int i = 0; i < network.get_layer(52).output.size(); i++)
-            dumptext << networkOutput_transposed[i] << " ";
-        dumptext.close();
-        #endif
-
-        int x = ((SCREEN_W - IMAGE_W) / 2);
-        int y = ((SCREEN_H - IMAGE_H) / 2)-110;
-        overlay_input.print_to_display(x, y);
-
-        x = ((SCREEN_W - IMAGE_W) / 2);
-        y = ((SCREEN_H + IMAGE_H) / 2)-110;
-        overlay_output.print_to_display(x, y);
-
-        dmp::util::swap_buffer();
-        fc++;
-
-        #ifdef DUMP_OUTPUT
-        const int n_layers = network.get_total_layer_count();
-        for (int i_layer = 0; i_layer < n_layers; ++i_layer) {
-          fprintf(stdout, "layer dumping -- %d \n", i_layer);
-
-          fpga_layer& layer = network.get_layer(i_layer);
-          char fnme[256];
-          snprintf(fnme, sizeof(fnme), "layer%02d.bin", i_layer);
-          FILE *fout = fopen(fnme, "wb");
-          if (!fout) {
-            fprintf(stderr, "fopen() failed for %s\n", fnme);
-            fflush(stderr);
-            return -1;
-          }
-          fwrite(layer.output.data(), sizeof(layer.output[0]), layer.output.size(), fout);
-          fclose(fout);
-          fprintf(stdout, "Saved %s\n", fnme);
-          fflush(stdout);
-        }
-        fflush(stderr);
-
-        FILE *fout = fopen("layer_input.bin", "wb");
-        if (fout) {
-          fwrite(ddr_buf_a_cpu, 2, IMAGE_W * IMAGE_H * 3, fout);
-          fclose(fout);
-          fprintf(stdout, "Saved input.bin\n");
-          fflush(stdout);
-        }
-
-        usleep(1000000);
-        break;
-
-        #endif
-
-        int key = getchar();
-        switch(key){
-          case 27: // ESC
-            exit_code = 0;
-            break;
-          case 32: // SPACE
-            pause = !pause;
-            break;
-        }
-      }
-
-      if (!pause) {
-        dmp::util::decode_jpg_file(input_image_path + image_names[image_nr],
-                                   imgView, IMAGE_W, IMAGE_H);
-        overlay_input.convert_to_overlay_pixel_format(imgView, IMAGE_W*IMAGE_H);
-        dmp::util::preproc_image(imgView, imgProc, IMAGE_W, IMAGE_H, IMAGE_RZ_W, IMAGE_RZ_H, 0, 0, 0, 1.0 / 255.0, true);
-        printf("preproc_image done\n");
-
-        if (image_nr == num_images - 1) {
-          image_nr = 0;
-        } else {
-          image_nr++;
-        }
-      }
-
-      memcpy(ddr_buf_a_cpu, (void*)imgProc, IMAGE_RZ_W * IMAGE_RZ_H * 3 * 2);
-
-      if (exit_code == -1) {  // do not start new HW ACC runs if about to exit...
-        sync_cnn_in++;
-      }
-    }
-
+  // Draw background two times for front and back buffer
+  const char *titles[] = {
+    "Depth Map",
+    "Per-Pixel Depth Estimation",
+  };
+  for (int i = 0; i < 2; ++i) {
+    bg_overlay.print_to_display(0, 0);
+    print_demo_title(bg_overlay, titles);
+    swap_buffer();
   }
 
-  g_should_stop = true;
-  pthread_join(hwacc_thread, NULL);
+  int exit_code = -1;
+  int image_nr = 0;
+  bool pause = false;
+  std::vector<float> networkOutput;
+  std::vector<float> networkOutput_transposed(IMAGE_RZ_H*IMAGE_RZ_W);
+  // Enter main loop
+  while (exit_code == -1) {
+    // If not pause, decode next JPEG image and do pre-processing
+    if (!pause) {
+      decode_jpg_file(image_names[image_nr], imgView, IMAGE_W, IMAGE_H);
+      overlay_input.convert_to_overlay_pixel_format(imgView, IMAGE_W * IMAGE_H);
+      preproc_image(imgView, imgProc, IMAGE_W, IMAGE_H, IMAGE_RZ_W, IMAGE_RZ_H,
+                    0, 0, 0, 1.0 / 255.0, true);
+      ++image_nr;
+      image_nr %= num_images;
+    }
 
-  dmp::util::shutdown();
+    // Run network in HW
+    memcpy(network.get_network_input_addr_cpu(), imgProc, IMAGE_W * IMAGE_H * 6);
+    network.RunNetwork();
+
+    // Handle output from HW
+    network.get_final_output(networkOutput);
+    // The values returned from get_final_output() is still transposed (height first) format.
+    // So it is actually a width=128, height=384 image
+    // need to transpose the output before you can compare to the Keras output.
+    for(int y = 0 ; y < IMAGE_RZ_H; y++)
+      for(int x = 0 ; x < IMAGE_RZ_W; x++)
+        networkOutput_transposed[x+y*IMAGE_RZ_W] = networkOutput[y+x*IMAGE_RZ_H]*255;
+
+    // Convert depth to color map
+    cv::Mat matDepth(IMAGE_RZ_H, IMAGE_RZ_W, CV_32FC1, networkOutput_transposed.data());
+    cv::Mat matDepth_8UC1;
+    matDepth.convertTo(matDepth_8UC1, CV_8U);
+    cv::Mat matDepth_8UC3, matDepth_color;
+    cv::cvtColor(matDepth_8UC1,matDepth_8UC3,CV_GRAY2RGB);
+    cv::applyColorMap(matDepth_8UC3, matDepth_color, cv::ColormapTypes::COLORMAP_JET);
+    cv::Mat matDepth_color_resized;
+    cv::resize( matDepth_color , matDepth_color_resized , cv::Size( IMAGE_W, IMAGE_H ), 0, 0, CV_INTER_LINEAR);
+    opencv2dmp( matDepth_color_resized, overlay_output );
+
+    // Draw results
+    overlay_input.print_to_display(((SCREEN_W - IMAGE_W) / 2), ((SCREEN_H - IMAGE_H) / 2)-110);
+    overlay_output.print_to_display(((SCREEN_W - IMAGE_W) / 2), ((SCREEN_H + IMAGE_H) / 2)-110);
+
+    // Output HW processing times
+    int conv_time_tot = network.get_conv_usec();
+    print_conv_time(bg_overlay, 8 * SCREEN_H / 9 + 10, conv_time_tot, conv_freq);
+
+    swap_buffer();
+
+    handle_keyboard_input(exit_code, pause);
+  }
+
+  shutdown();
 
   return exit_code;
 }
@@ -431,22 +208,3 @@ void opencv2dmp(cv::Mat& input_frm, COverlayRGB& output_frm, bool isColor){
     }
   }
 }
-
-/**
- * @brief get raw data from dmp board image fromat
- * 
- * @param input_frm   dmp board image format
- * @param imgview     unsigned int raw data pointer
- */
-void frame2rawUInt(COverlayRGB& intput_frm, unsigned int *imgview){
-  unsigned char *p = intput_frm.get_overlay_buf_ref();
-  unsigned int size_of_imgview = intput_frm.get_overlay_width()*intput_frm.get_overlay_height();
-  for(unsigned int i = 0; i < size_of_imgview*3; i += 3)
-  {
-    unsigned int imgview_tmp  = ((unsigned int)p[i]<<24)&0xff000000;
-                 imgview_tmp  |= ((unsigned int)p[i+1]<<16)&0x00ff0000;
-                 imgview_tmp  |= ((unsigned int)p[i+2]<<8)&0x0000ff00; 
-    imgview[i/3]              = imgview_tmp;
-  }
-}
-
