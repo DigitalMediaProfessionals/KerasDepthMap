@@ -1,31 +1,26 @@
 include ../../env.mk
 
 INC = -I../../dv-user-driver/include -I../common/include -I/usr/include/agg2 `freetype-config --cflags`
-LIB = -L../../dv-user-driver -ldmpdv -L../common/lib -ldv700_util -lagg -lfreetype\
-	 -lopencv_shape -lopencv_stitching -lopencv_superres -lopencv_videostab \
-	 -lopencv_aruco -lopencv_bgsegm -lopencv_bioinspired -lopencv_ccalib \
-	 -lopencv_datasets -lopencv_dpm -lopencv_face -lopencv_freetype \
-	 -lopencv_fuzzy -lopencv_hdf -lopencv_line_descriptor -lopencv_optflow \
-	 -lopencv_video -lopencv_plot -lopencv_reg -lopencv_saliency -lopencv_stereo \
-	 -lopencv_structured_light -lopencv_phase_unwrapping -lopencv_rgbd -lopencv_viz \
-	 -lopencv_surface_matching -lopencv_text -lopencv_ximgproc -lopencv_calib3d \
-	 -lopencv_features2d -lopencv_flann -lopencv_xobjdetect -lopencv_objdetect \
-	 -lopencv_ml -lopencv_xphoto -lopencv_highgui -lopencv_videoio -lopencv_imgcodecs \
-	 -lopencv_photo -lopencv_imgproc -lopencv_core \
+LIB = -L../../dv-user-driver -ldmpdv -L../common/lib -ldv700_util -lagg -lfreetype $(shell pkg-config --cflags --libs opencv)
 
-CFLAGS = -pthread -std=c++11 $(OPT) -Wall -Werror -c $(INC)
-LFLAGS = -pthread -std=c++11 $(OPT)
+CXXFLAGS = -pthread -std=c++11 $(OPT) -Wall -Werror -c $(INC)
+LDFLAGS = -pthread $(LIB)
 
 DEPS = KerasDepthMap_gen.h imagenet_1000_categories.h
-OBJS = KerasDepthMap_gen.o depthMap.o
-TGT  = bin/KerasDepthMap
+OBJS = KerasDepthMap_gen.o 
+TGT  = bin/KerasDepthMap bin/KerasDepthMap_threaded
 
-# %.o: %.cpp $(DEPS)
-%.o: %.cpp
-	$(GPP) $(CFLAGS) -o $@ $<
+all : $(TGT)
 
-all : $(OBJS)
-	$(GPP) $(LFLAGS) $(OBJS) -o $(TGT) $(LIB) $(pkg-config --cflags --libs opencv)
+%.o: %.cpp $(DEPS)
+	$(GPP) $(CXXFLAGS) -o $@ $<
+
+bin/KerasDepthMap: $(OBJS) depthMap.o
+	$(CXX) -o $@ $^ $(LDFLAGS)
+
+bin/KerasDepthMap_threaded: $(OBJS) depthMap_threaded.o
+	$(CXX) -o $@ $^ $(LDFLAGS)
+
 
 clean:
 	rm *.o
