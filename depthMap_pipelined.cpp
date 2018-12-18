@@ -158,20 +158,6 @@ void *inference(void *) {
   unsigned &rbuf_idx = inreference_rbuf_idx;
 
   // Initialize network object
-  network.Verbose(0);
-  if (!network.Initialize()) {
-    exit_code = 1;
-    return NULL;
-  }
-  if (!network.LoadWeights(FILENAME_WEIGHTS)) {
-    exit_code = 1;
-    return NULL;
-  }
-  if (!network.Commit()) {
-    exit_code = 1;
-    return NULL;
-  }
-
   while (exit_code == -1) {
     while (rbuf_idx == preproc_rbuf_idx) {
       usleep(USLEEP_TIME);
@@ -282,12 +268,33 @@ void *postproc(void *) {
 int main(int argc, char** argv) {
   // Initialize FB
   if (!init_fb()) {
-    cout << "init_fb() failed." << endl;
-    return -1;
+    cerr << "init_fb() failed." << endl;
+    exit_code = 1;
+    goto error;
   }
   for(int i = 0; i < RING_BUF_SIZE; i++) {
     overlay_input[i] = new COverlayRGB(SCREEN_W, SCREEN_H);
+    if(!overlay_input[i]) {
+      cerr << "fail to allocate COverlayRGB" << endl;
+      exit_code = 1;
+      goto error;
+    }
     overlay_input[i]->alloc_mem_overlay(IMAGE_W, IMAGE_H);
+  }
+
+  // Initialize Network
+  network.Verbose(0);
+  if (!network.Initialize()) {
+    exit_code = 1;
+    goto error;
+  }
+  if (!network.LoadWeights(FILENAME_WEIGHTS)) {
+    exit_code = 1;
+    goto error;
+  }
+  if (!network.Commit()) {
+    exit_code = 1;
+    goto error;
   }
 
   pthread_t preproc_th;
@@ -302,9 +309,12 @@ int main(int argc, char** argv) {
   pthread_join(inf_th,      NULL);
   pthread_join(postproc_th, NULL);
 
+error:
   shutdown();
   for(int i = 0; i < RING_BUF_SIZE; i++) {
-    delete overlay_input[i];
+    if(overlay_input[i]) {
+      delete overlay_input[i];
+    }
   }
 
   return exit_code;
