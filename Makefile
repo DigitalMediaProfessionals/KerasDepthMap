@@ -8,7 +8,7 @@ LDFLAGS = -pthread $(LIB)
 
 DEPS = KerasDepthMap_gen.h imagenet_1000_categories.h
 OBJS = KerasDepthMap_gen.o 
-TGT  = bin/KerasDepthMap bin/KerasDepthMap_threaded
+TGT  = bin/KerasDepthMap bin/KerasDepthMap_pipelined
 
 all : $(TGT)
 
@@ -18,7 +18,7 @@ all : $(TGT)
 bin/KerasDepthMap: $(OBJS) depthMap.o
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
-bin/KerasDepthMap_threaded: $(OBJS) depthMap_threaded.o
+bin/KerasDepthMap_pipelined: $(OBJS) depthMap_pipelined.o
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
 
