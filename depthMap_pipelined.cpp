@@ -69,7 +69,7 @@ int exit_code = -1;
 bool do_pause = false;
 
 // Buffer for pre-processed image data
-__fp16 imgProc[IMAGE_RZ_W * IMAGE_RZ_H * 3][RING_BUF_SIZE];
+__fp16 imgProc[RING_BUF_SIZE][IMAGE_RZ_W * IMAGE_RZ_H * 3];
 // Buffer for overlay_input
 COverlayRGB *overlay_input[RING_BUF_SIZE];
 // Buffer for network output
