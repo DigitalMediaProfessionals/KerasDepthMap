@@ -81,7 +81,7 @@ unsigned postproc_rbuf_idx    = 0;
 
 void increment_circular_variable(unsigned &v, unsigned max) {
   v++;
-  if(v > max) {
+  if (v > max) {
     v = 0;
   }
 }
@@ -94,19 +94,19 @@ void increment_circular_variable(unsigned &v, unsigned max) {
  * @param isColor        input_fram is color or grayscale
  */
 void opencv2dmp(cv::Mat& input_frm, COverlayRGB& output_frm, bool isColor = true) {
-  if( input_frm.cols != IMAGE_RZ_W && input_frm.rows != IMAGE_RZ_H ){
+  if (input_frm.cols != IMAGE_RZ_W && input_frm.rows != IMAGE_RZ_H){
       output_frm.alloc_mem_overlay(input_frm.cols, input_frm.rows);
   }
   // int i = 0;
   for (unsigned int h=0;h<output_frm.get_overlay_height();h++) {
     for(unsigned int w=0;w<output_frm.get_overlay_width();w++) {
-      if(isColor){
+      if (isColor){
         cv::Vec3b intensity = input_frm.at<cv::Vec3b>(h, w);
         uchar blue = intensity.val[0];
         uchar green = intensity.val[1];
         uchar red = intensity.val[2];
         output_frm.set_pixel(w,h, red, green, blue);
-        // if(++i<32)
+        // if (++i<32)
         //   printf("%d %d %d\n", red, green, blue);
       }else{
         uchar intensity = input_frm.at<uchar>(h, w);
@@ -209,8 +209,8 @@ void *postproc(void *) {
   DECLARE_TVAL(swap_buffer);
   TVAL_START(swap_buffer).tv_sec = 0;
 #endif
-  while(exit_code == -1) {
-    while(rbuf_idx == inreference_rbuf_idx) {
+  while (exit_code == -1) {
+    while (rbuf_idx == inreference_rbuf_idx) {
       usleep(USLEEP_TIME);
     }
 
@@ -235,7 +235,7 @@ void *postproc(void *) {
     cv::cvtColor(matDepth_8UC1,matDepth_8UC3,CV_GRAY2RGB);
     cv::applyColorMap(matDepth_8UC3, matDepth_color, cv::ColormapTypes::COLORMAP_JET);
     cv::Mat matDepth_color_resized;
-    cv::resize(matDepth_color , matDepth_color_resized , cv::Size( IMAGE_W, IMAGE_H ), 0, 0, CV_INTER_LINEAR);
+    cv::resize(matDepth_color , matDepth_color_resized , cv::Size(IMAGE_W, IMAGE_H), 0, 0, CV_INTER_LINEAR);
     opencv2dmp(matDepth_color_resized, overlay_output );
 
     // Draw results
@@ -249,7 +249,7 @@ void *postproc(void *) {
     swap_buffer();
 #ifdef DMP_MEASURE_TIME
     GET_TVAL_END(swap_buffer);
-    if(TVAL_START(swap_buffer).tv_sec) {
+    if (TVAL_START(swap_buffer).tv_sec) {
       SHOW_TIME(swap_buffer);
     }
     TVAL_START(swap_buffer).tv_sec = TVAL_END(swap_buffer).tv_sec;
@@ -274,7 +274,7 @@ int main(int argc, char** argv) {
   }
   for(int i = 0; i < RING_BUF_SIZE; i++) {
     overlay_input[i] = new COverlayRGB(SCREEN_W, SCREEN_H);
-    if(!overlay_input[i]) {
+    if (!overlay_input[i]) {
       cerr << "fail to allocate COverlayRGB" << endl;
       exit_code = 1;
       goto error;
@@ -312,7 +312,7 @@ int main(int argc, char** argv) {
 error:
   shutdown();
   for(int i = 0; i < RING_BUF_SIZE; i++) {
-    if(overlay_input[i]) {
+    if (overlay_input[i]) {
       delete overlay_input[i];
     }
   }
