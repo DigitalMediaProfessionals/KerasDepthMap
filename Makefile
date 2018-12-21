@@ -19,7 +19,7 @@ bin/KerasDepthMap: $(OBJS) depthMap.o
 	$(GPP) -o $@ $^ $(LFLAGS)
 
 bin/KerasDepthMap_pipelined: $(OBJS) depthMap_pipelined.o
-	$(GPP)) -o $@ $^ $(LFLAGS)
+	$(GPP) -o $@ $^ $(LFLAGS)
 
 
 clean:
