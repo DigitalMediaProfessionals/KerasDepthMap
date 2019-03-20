@@ -592,7 +592,7 @@ class CKerasDepthMap : public CDMP_Network {
 
   | ID | Layers | Type | Dim In | Dim Out | Param | Mem |
   | :- | :- | :-: | :-: | :-: | :-: | :-: |
-  | 52 | FPGA-Layer | Convolution | (384, 128, 1) | (384, 128, 1) | - | - |
+  | 52 | FPGA-Layer | Convolution | (384, 128, 1) | (49152,) | - | - |
   | 52-0 | depthwise_conv2d_4 | Convolution | (384, 128, 1) | (384, 128, 1) | - | 160 |
 
   */

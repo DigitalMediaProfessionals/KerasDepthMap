@@ -28,7 +28,7 @@ CKerasDepthMap::~CKerasDepthMap() {
 }
 
 bool CKerasDepthMap::Initialize() {
-  if (!ReserveMemory(63395296, 5603328)) {
+  if (!ReserveMemory(63395296, 8159232)) {
     return false;
   }
 
@@ -95,10 +95,8 @@ bool CKerasDepthMap::Initialize() {
 //Layer_0: Convolution Layer
 //  ->: cnv1
 //  ->: cnv1_BatchNorm
-//  ->: cnv1_BatchNorm
 //  ->: activation_1
 void CKerasDepthMap::Layer_0() {
-  get_layer(0).name = "cnv1, cnv1_BatchNorm, cnv1_BatchNorm, activation_1";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(0).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -112,11 +110,11 @@ void CKerasDepthMap::Layer_0() {
   conf.z = 1;  // Input Depth
   conf.c = 3;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 0;
+  conf.input_buf.offs = 786432;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 294912;
+  conf.output_buf.offs = 0;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -128,7 +126,6 @@ void CKerasDepthMap::Layer_0() {
   //RUN : 0
   //--------------------------------------------------
   //->: cnv1
-  //->: cnv1_BatchNorm
   //->: cnv1_BatchNorm
   //->: activation_1
   conf.run[0].m = 32;  // Output Channels
@@ -152,9 +149,10 @@ void CKerasDepthMap::Layer_0() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(0);
+  layer.name = "cnv1";
   layer.type = LT_CONV;
-  layer.input_offs = 0;
-  layer.output_offs = 294912;
+  layer.input_offs = 786432;
+  layer.output_offs = 0;
   layer.output_size = 786432;
   layer.input_dim[0] = 384;
   layer.input_dim[1] = 128;
@@ -172,10 +170,8 @@ void CKerasDepthMap::Layer_0() {
 //Layer_1: Convolution Layer
 //  ->: cnv1b
 //  ->: cnv1b_BatchNorm
-//  ->: cnv1b_BatchNorm
 //  ->: activation_2
 void CKerasDepthMap::Layer_1() {
-  get_layer(1).name = "cnv1b, cnv1b_BatchNorm, cnv1b_BatchNorm, activation_2";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(1).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -189,11 +185,11 @@ void CKerasDepthMap::Layer_1() {
   conf.z = 1;  // Input Depth
   conf.c = 32;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 294912;
+  conf.input_buf.offs = 0;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 1867776;
+  conf.output_buf.offs = 1622016;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -205,7 +201,6 @@ void CKerasDepthMap::Layer_1() {
   //RUN : 0
   //--------------------------------------------------
   //->: cnv1b
-  //->: cnv1b_BatchNorm
   //->: cnv1b_BatchNorm
   //->: activation_2
   conf.run[0].m = 32;  // Output Channels
@@ -229,9 +224,10 @@ void CKerasDepthMap::Layer_1() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(1);
+  layer.name = "cnv1b";
   layer.type = LT_CONV;
-  layer.input_offs = 294912;
-  layer.output_offs = 1867776;
+  layer.input_offs = 0;
+  layer.output_offs = 1622016;
   layer.output_size = 786432;
   layer.input_dim[0] = 192;
   layer.input_dim[1] = 64;
@@ -249,10 +245,8 @@ void CKerasDepthMap::Layer_1() {
 //Layer_2: Convolution Layer
 //  ->: cnv2
 //  ->: cnv2_BatchNorm
-//  ->: cnv2_BatchNorm
 //  ->: activation_3
 void CKerasDepthMap::Layer_2() {
-  get_layer(2).name = "cnv2, cnv2_BatchNorm, cnv2_BatchNorm, activation_3";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(2).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -266,7 +260,7 @@ void CKerasDepthMap::Layer_2() {
   conf.z = 1;  // Input Depth
   conf.c = 32;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 1867776;
+  conf.input_buf.offs = 1622016;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
@@ -282,7 +276,6 @@ void CKerasDepthMap::Layer_2() {
   //RUN : 0
   //--------------------------------------------------
   //->: cnv2
-  //->: cnv2_BatchNorm
   //->: cnv2_BatchNorm
   //->: activation_3
   conf.run[0].m = 64;  // Output Channels
@@ -306,8 +299,9 @@ void CKerasDepthMap::Layer_2() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(2);
+  layer.name = "cnv2";
   layer.type = LT_CONV;
-  layer.input_offs = 1867776;
+  layer.input_offs = 1622016;
   layer.output_offs = 0;
   layer.output_size = 393216;
   layer.input_dim[0] = 192;
@@ -326,10 +320,8 @@ void CKerasDepthMap::Layer_2() {
 //Layer_3: Convolution Layer
 //  ->: cnv2b
 //  ->: cnv2b_BatchNorm
-//  ->: cnv2b_BatchNorm
 //  ->: activation_4
 void CKerasDepthMap::Layer_3() {
-  get_layer(3).name = "cnv2b, cnv2b_BatchNorm, cnv2b_BatchNorm, activation_4";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(3).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -347,7 +339,7 @@ void CKerasDepthMap::Layer_3() {
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 3072000;
+  conf.output_buf.offs = 4399104;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -359,7 +351,6 @@ void CKerasDepthMap::Layer_3() {
   //RUN : 0
   //--------------------------------------------------
   //->: cnv2b
-  //->: cnv2b_BatchNorm
   //->: cnv2b_BatchNorm
   //->: activation_4
   conf.run[0].m = 64;  // Output Channels
@@ -383,9 +374,10 @@ void CKerasDepthMap::Layer_3() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(3);
+  layer.name = "cnv2b";
   layer.type = LT_CONV;
   layer.input_offs = 0;
-  layer.output_offs = 3072000;
+  layer.output_offs = 4399104;
   layer.output_size = 393216;
   layer.input_dim[0] = 96;
   layer.input_dim[1] = 32;
@@ -403,10 +395,8 @@ void CKerasDepthMap::Layer_3() {
 //Layer_4: Convolution Layer
 //  ->: cnv3
 //  ->: cnv3_BatchNorm
-//  ->: cnv3_BatchNorm
 //  ->: activation_5
 void CKerasDepthMap::Layer_4() {
-  get_layer(4).name = "cnv3, cnv3_BatchNorm, cnv3_BatchNorm, activation_5";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(4).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -420,7 +410,7 @@ void CKerasDepthMap::Layer_4() {
   conf.z = 1;  // Input Depth
   conf.c = 64;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 3072000;
+  conf.input_buf.offs = 4399104;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
@@ -436,7 +426,6 @@ void CKerasDepthMap::Layer_4() {
   //RUN : 0
   //--------------------------------------------------
   //->: cnv3
-  //->: cnv3_BatchNorm
   //->: cnv3_BatchNorm
   //->: activation_5
   conf.run[0].m = 128;  // Output Channels
@@ -460,8 +449,9 @@ void CKerasDepthMap::Layer_4() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(4);
+  layer.name = "cnv3";
   layer.type = LT_CONV;
-  layer.input_offs = 3072000;
+  layer.input_offs = 4399104;
   layer.output_offs = 0;
   layer.output_size = 196608;
   layer.input_dim[0] = 96;
@@ -480,10 +470,8 @@ void CKerasDepthMap::Layer_4() {
 //Layer_5: Convolution Layer
 //  ->: cnv3b
 //  ->: cnv3b_BatchNorm
-//  ->: cnv3b_BatchNorm
 //  ->: activation_6
 void CKerasDepthMap::Layer_5() {
-  get_layer(5).name = "cnv3b, cnv3b_BatchNorm, cnv3b_BatchNorm, activation_6";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(5).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -501,7 +489,7 @@ void CKerasDepthMap::Layer_5() {
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 393216;
+  conf.output_buf.offs = 396288;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -513,7 +501,6 @@ void CKerasDepthMap::Layer_5() {
   //RUN : 0
   //--------------------------------------------------
   //->: cnv3b
-  //->: cnv3b_BatchNorm
   //->: cnv3b_BatchNorm
   //->: activation_6
   conf.run[0].m = 128;  // Output Channels
@@ -537,9 +524,10 @@ void CKerasDepthMap::Layer_5() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(5);
+  layer.name = "cnv3b";
   layer.type = LT_CONV;
   layer.input_offs = 0;
-  layer.output_offs = 393216;
+  layer.output_offs = 396288;
   layer.output_size = 196608;
   layer.input_dim[0] = 48;
   layer.input_dim[1] = 16;
@@ -557,10 +545,8 @@ void CKerasDepthMap::Layer_5() {
 //Layer_6: Convolution Layer
 //  ->: cnv4
 //  ->: cnv4_BatchNorm
-//  ->: cnv4_BatchNorm
 //  ->: activation_7
 void CKerasDepthMap::Layer_6() {
-  get_layer(6).name = "cnv4, cnv4_BatchNorm, cnv4_BatchNorm, activation_7";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(6).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -574,7 +560,7 @@ void CKerasDepthMap::Layer_6() {
   conf.z = 1;  // Input Depth
   conf.c = 128;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 393216;
+  conf.input_buf.offs = 396288;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
@@ -590,7 +576,6 @@ void CKerasDepthMap::Layer_6() {
   //RUN : 0
   //--------------------------------------------------
   //->: cnv4
-  //->: cnv4_BatchNorm
   //->: cnv4_BatchNorm
   //->: activation_7
   conf.run[0].m = 256;  // Output Channels
@@ -614,8 +599,9 @@ void CKerasDepthMap::Layer_6() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(6);
+  layer.name = "cnv4";
   layer.type = LT_CONV;
-  layer.input_offs = 393216;
+  layer.input_offs = 396288;
   layer.output_offs = 0;
   layer.output_size = 98304;
   layer.input_dim[0] = 48;
@@ -634,10 +620,8 @@ void CKerasDepthMap::Layer_6() {
 //Layer_7: Convolution Layer
 //  ->: cnv4b
 //  ->: cnv4b_BatchNorm
-//  ->: cnv4b_BatchNorm
 //  ->: activation_8
 void CKerasDepthMap::Layer_7() {
-  get_layer(7).name = "cnv4b, cnv4b_BatchNorm, cnv4b_BatchNorm, activation_8";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(7).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -655,7 +639,7 @@ void CKerasDepthMap::Layer_7() {
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 688128;
+  conf.output_buf.offs = 5683200;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -667,7 +651,6 @@ void CKerasDepthMap::Layer_7() {
   //RUN : 0
   //--------------------------------------------------
   //->: cnv4b
-  //->: cnv4b_BatchNorm
   //->: cnv4b_BatchNorm
   //->: activation_8
   conf.run[0].m = 256;  // Output Channels
@@ -691,9 +674,10 @@ void CKerasDepthMap::Layer_7() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(7);
+  layer.name = "cnv4b";
   layer.type = LT_CONV;
   layer.input_offs = 0;
-  layer.output_offs = 688128;
+  layer.output_offs = 5683200;
   layer.output_size = 98304;
   layer.input_dim[0] = 24;
   layer.input_dim[1] = 8;
@@ -711,10 +695,8 @@ void CKerasDepthMap::Layer_7() {
 //Layer_8: Convolution Layer
 //  ->: cnv5
 //  ->: cnv5_BatchNorm
-//  ->: cnv5_BatchNorm
 //  ->: activation_9
 void CKerasDepthMap::Layer_8() {
-  get_layer(8).name = "cnv5, cnv5_BatchNorm, cnv5_BatchNorm, activation_9";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(8).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -728,11 +710,11 @@ void CKerasDepthMap::Layer_8() {
   conf.z = 1;  // Input Depth
   conf.c = 256;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 688128;
+  conf.input_buf.offs = 5683200;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 0;
+  conf.output_buf.offs = 147456;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -744,7 +726,6 @@ void CKerasDepthMap::Layer_8() {
   //RUN : 0
   //--------------------------------------------------
   //->: cnv5
-  //->: cnv5_BatchNorm
   //->: cnv5_BatchNorm
   //->: activation_9
   conf.run[0].m = 512;  // Output Channels
@@ -768,9 +749,10 @@ void CKerasDepthMap::Layer_8() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(8);
+  layer.name = "cnv5";
   layer.type = LT_CONV;
-  layer.input_offs = 688128;
-  layer.output_offs = 0;
+  layer.input_offs = 5683200;
+  layer.output_offs = 147456;
   layer.output_size = 49152;
   layer.input_dim[0] = 24;
   layer.input_dim[1] = 8;
@@ -788,10 +770,8 @@ void CKerasDepthMap::Layer_8() {
 //Layer_9: Convolution Layer
 //  ->: cnv5b
 //  ->: cnv5b_BatchNorm
-//  ->: cnv5b_BatchNorm
 //  ->: activation_10
 void CKerasDepthMap::Layer_9() {
-  get_layer(9).name = "cnv5b, cnv5b_BatchNorm, cnv5b_BatchNorm, activation_10";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(9).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -805,11 +785,11 @@ void CKerasDepthMap::Layer_9() {
   conf.z = 1;  // Input Depth
   conf.c = 512;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 0;
+  conf.input_buf.offs = 147456;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 98304;
+  conf.output_buf.offs = 49152;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -821,7 +801,6 @@ void CKerasDepthMap::Layer_9() {
   //RUN : 0
   //--------------------------------------------------
   //->: cnv5b
-  //->: cnv5b_BatchNorm
   //->: cnv5b_BatchNorm
   //->: activation_10
   conf.run[0].m = 512;  // Output Channels
@@ -845,9 +824,10 @@ void CKerasDepthMap::Layer_9() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(9);
+  layer.name = "cnv5b";
   layer.type = LT_CONV;
-  layer.input_offs = 0;
-  layer.output_offs = 98304;
+  layer.input_offs = 147456;
+  layer.output_offs = 49152;
   layer.output_size = 49152;
   layer.input_dim[0] = 12;
   layer.input_dim[1] = 4;
@@ -865,10 +845,8 @@ void CKerasDepthMap::Layer_9() {
 //Layer_10: Convolution Layer
 //  ->: cnv6
 //  ->: cnv6_BatchNorm
-//  ->: cnv6_BatchNorm
 //  ->: activation_11
 void CKerasDepthMap::Layer_10() {
-  get_layer(10).name = "cnv6, cnv6_BatchNorm, cnv6_BatchNorm, activation_11";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(10).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -882,11 +860,11 @@ void CKerasDepthMap::Layer_10() {
   conf.z = 1;  // Input Depth
   conf.c = 512;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 98304;
+  conf.input_buf.offs = 49152;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 0;
+  conf.output_buf.offs = 184320;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -898,7 +876,6 @@ void CKerasDepthMap::Layer_10() {
   //RUN : 0
   //--------------------------------------------------
   //->: cnv6
-  //->: cnv6_BatchNorm
   //->: cnv6_BatchNorm
   //->: activation_11
   conf.run[0].m = 512;  // Output Channels
@@ -922,9 +899,10 @@ void CKerasDepthMap::Layer_10() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(10);
+  layer.name = "cnv6";
   layer.type = LT_CONV;
-  layer.input_offs = 98304;
-  layer.output_offs = 0;
+  layer.input_offs = 49152;
+  layer.output_offs = 184320;
   layer.output_size = 12288;
   layer.input_dim[0] = 12;
   layer.input_dim[1] = 4;
@@ -942,10 +920,8 @@ void CKerasDepthMap::Layer_10() {
 //Layer_11: Convolution Layer
 //  ->: cnv6b
 //  ->: cnv6b_BatchNorm
-//  ->: cnv6b_BatchNorm
 //  ->: activation_12
 void CKerasDepthMap::Layer_11() {
-  get_layer(11).name = "cnv6b, cnv6b_BatchNorm, cnv6b_BatchNorm, activation_12";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(11).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -959,11 +935,11 @@ void CKerasDepthMap::Layer_11() {
   conf.z = 1;  // Input Depth
   conf.c = 512;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 0;
+  conf.input_buf.offs = 184320;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 24576;
+  conf.output_buf.offs = 159744;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -975,7 +951,6 @@ void CKerasDepthMap::Layer_11() {
   //RUN : 0
   //--------------------------------------------------
   //->: cnv6b
-  //->: cnv6b_BatchNorm
   //->: cnv6b_BatchNorm
   //->: activation_12
   conf.run[0].m = 512;  // Output Channels
@@ -999,9 +974,10 @@ void CKerasDepthMap::Layer_11() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(11);
+  layer.name = "cnv6b";
   layer.type = LT_CONV;
-  layer.input_offs = 0;
-  layer.output_offs = 24576;
+  layer.input_offs = 184320;
+  layer.output_offs = 159744;
   layer.output_size = 12288;
   layer.input_dim[0] = 6;
   layer.input_dim[1] = 2;
@@ -1019,10 +995,8 @@ void CKerasDepthMap::Layer_11() {
 //Layer_12: Convolution Layer
 //  ->: cnv7
 //  ->: cnv7_BatchNorm
-//  ->: cnv7_BatchNorm
 //  ->: activation_13
 void CKerasDepthMap::Layer_12() {
-  get_layer(12).name = "cnv7, cnv7_BatchNorm, cnv7_BatchNorm, activation_13";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(12).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -1036,11 +1010,11 @@ void CKerasDepthMap::Layer_12() {
   conf.z = 1;  // Input Depth
   conf.c = 512;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 24576;
+  conf.input_buf.offs = 159744;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 0;
+  conf.output_buf.offs = 184320;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -1052,7 +1026,6 @@ void CKerasDepthMap::Layer_12() {
   //RUN : 0
   //--------------------------------------------------
   //->: cnv7
-  //->: cnv7_BatchNorm
   //->: cnv7_BatchNorm
   //->: activation_13
   conf.run[0].m = 512;  // Output Channels
@@ -1076,9 +1049,10 @@ void CKerasDepthMap::Layer_12() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(12);
+  layer.name = "cnv7";
   layer.type = LT_CONV;
-  layer.input_offs = 24576;
-  layer.output_offs = 0;
+  layer.input_offs = 159744;
+  layer.output_offs = 184320;
   layer.output_size = 3072;
   layer.input_dim[0] = 6;
   layer.input_dim[1] = 2;
@@ -1096,10 +1070,8 @@ void CKerasDepthMap::Layer_12() {
 //Layer_13: Convolution Layer
 //  ->: cnv7b
 //  ->: cnv7b_BatchNorm
-//  ->: cnv7b_BatchNorm
 //  ->: activation_14
 void CKerasDepthMap::Layer_13() {
-  get_layer(13).name = "cnv7b, cnv7b_BatchNorm, cnv7b_BatchNorm, activation_14";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(13).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -1113,11 +1085,11 @@ void CKerasDepthMap::Layer_13() {
   conf.z = 1;  // Input Depth
   conf.c = 512;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 0;
+  conf.input_buf.offs = 184320;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 3072;
+  conf.output_buf.offs = 196608;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -1129,7 +1101,6 @@ void CKerasDepthMap::Layer_13() {
   //RUN : 0
   //--------------------------------------------------
   //->: cnv7b
-  //->: cnv7b_BatchNorm
   //->: cnv7b_BatchNorm
   //->: activation_14
   conf.run[0].m = 512;  // Output Channels
@@ -1153,9 +1124,10 @@ void CKerasDepthMap::Layer_13() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(13);
+  layer.name = "cnv7b";
   layer.type = LT_CONV;
-  layer.input_offs = 0;
-  layer.output_offs = 3072;
+  layer.input_offs = 184320;
+  layer.output_offs = 196608;
   layer.output_size = 3072;
   layer.input_dim[0] = 3;
   layer.input_dim[1] = 1;
@@ -1173,7 +1145,6 @@ void CKerasDepthMap::Layer_13() {
 //Layer_14: Convolution Layer
 //  ->: up_sampling2d_1
 void CKerasDepthMap::Layer_14() {
-  get_layer(14).name = "up_sampling2d_1";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(14).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -1187,11 +1158,11 @@ void CKerasDepthMap::Layer_14() {
   conf.z = 1;  // Input Depth
   conf.c = 512;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 3072;
+  conf.input_buf.offs = 196608;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 36864;
+  conf.output_buf.offs = 184320;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -1224,9 +1195,10 @@ void CKerasDepthMap::Layer_14() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(14);
+  layer.name = "up_sampling2d_1";
   layer.type = LT_CONV;
-  layer.input_offs = 3072;
-  layer.output_offs = 36864;
+  layer.input_offs = 196608;
+  layer.output_offs = 184320;
   layer.output_size = 12288;
   layer.input_dim[0] = 3;
   layer.input_dim[1] = 1;
@@ -1244,10 +1216,8 @@ void CKerasDepthMap::Layer_14() {
 //Layer_15: Convolution Layer
 //  ->: upcnv7
 //  ->: upcnv7_BatchNorm
-//  ->: upcnv7_BatchNorm
 //  ->: activation_15
 void CKerasDepthMap::Layer_15() {
-  get_layer(15).name = "upcnv7, upcnv7_BatchNorm, upcnv7_BatchNorm, activation_15";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(15).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -1261,11 +1231,11 @@ void CKerasDepthMap::Layer_15() {
   conf.z = 1;  // Input Depth
   conf.c = 512;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 36864;
+  conf.input_buf.offs = 184320;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 12288;
+  conf.output_buf.offs = 147456;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -1277,7 +1247,6 @@ void CKerasDepthMap::Layer_15() {
   //RUN : 0
   //--------------------------------------------------
   //->: upcnv7
-  //->: upcnv7_BatchNorm
   //->: upcnv7_BatchNorm
   //->: activation_15
   conf.run[0].m = 512;  // Output Channels
@@ -1301,9 +1270,10 @@ void CKerasDepthMap::Layer_15() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(15);
+  layer.name = "upcnv7";
   layer.type = LT_CONV;
-  layer.input_offs = 36864;
-  layer.output_offs = 12288;
+  layer.input_offs = 184320;
+  layer.output_offs = 147456;
   layer.output_size = 12288;
   layer.input_dim[0] = 6;
   layer.input_dim[1] = 2;
@@ -1322,9 +1292,10 @@ void CKerasDepthMap::Layer_15() {
 //	->: concatenate_1
 void CKerasDepthMap::Layer_16() {
   fpga_layer& layer = get_layer(16);
+  layer.name = "concatenate_1";
   layer.type = LT_CONCAT;
-  layer.input_offs = 12288;
-  layer.output_offs = 12288;
+  layer.input_offs = 147456;
+  layer.output_offs = 147456;
   layer.output_size = 24576;
   layer.input_dim[0] = 6;
   layer.input_dim[1] = 2;
@@ -1342,10 +1313,8 @@ void CKerasDepthMap::Layer_16() {
 //Layer_17: Convolution Layer
 //  ->: icnv7
 //  ->: icnv7_BatchNorm
-//  ->: icnv7_BatchNorm
 //  ->: activation_16
 void CKerasDepthMap::Layer_17() {
-  get_layer(17).name = "icnv7, icnv7_BatchNorm, icnv7_BatchNorm, activation_16";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(17).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -1359,11 +1328,11 @@ void CKerasDepthMap::Layer_17() {
   conf.z = 1;  // Input Depth
   conf.c = 1024;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 12288;
+  conf.input_buf.offs = 147456;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 0;
+  conf.output_buf.offs = 789504;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -1375,7 +1344,6 @@ void CKerasDepthMap::Layer_17() {
   //RUN : 0
   //--------------------------------------------------
   //->: icnv7
-  //->: icnv7_BatchNorm
   //->: icnv7_BatchNorm
   //->: activation_16
   conf.run[0].m = 512;  // Output Channels
@@ -1399,9 +1367,10 @@ void CKerasDepthMap::Layer_17() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(17);
+  layer.name = "icnv7";
   layer.type = LT_CONV;
-  layer.input_offs = 12288;
-  layer.output_offs = 0;
+  layer.input_offs = 147456;
+  layer.output_offs = 789504;
   layer.output_size = 12288;
   layer.input_dim[0] = 6;
   layer.input_dim[1] = 2;
@@ -1413,13 +1382,12 @@ void CKerasDepthMap::Layer_17() {
   layer.output_dim_size = 3;
   layer.is_output = false;
   layer.is_f32_output = false;
-  layer.is_input_hw_layout = false;
+  layer.is_input_hw_layout = true;
 }//end of  Layer_17
 
 //Layer_18: Convolution Layer
 //  ->: up_sampling2d_2
 void CKerasDepthMap::Layer_18() {
-  get_layer(18).name = "up_sampling2d_2";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(18).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -1433,7 +1401,7 @@ void CKerasDepthMap::Layer_18() {
   conf.z = 1;  // Input Depth
   conf.c = 512;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 0;
+  conf.input_buf.offs = 789504;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
@@ -1470,8 +1438,9 @@ void CKerasDepthMap::Layer_18() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(18);
+  layer.name = "up_sampling2d_2";
   layer.type = LT_CONV;
-  layer.input_offs = 0;
+  layer.input_offs = 789504;
   layer.output_offs = 147456;
   layer.output_size = 49152;
   layer.input_dim[0] = 6;
@@ -1490,10 +1459,8 @@ void CKerasDepthMap::Layer_18() {
 //Layer_19: Convolution Layer
 //  ->: upcnv6
 //  ->: upcnv6_BatchNorm
-//  ->: upcnv6_BatchNorm
 //  ->: activation_17
 void CKerasDepthMap::Layer_19() {
-  get_layer(19).name = "upcnv6, upcnv6_BatchNorm, upcnv6_BatchNorm, activation_17";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(19).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -1511,7 +1478,7 @@ void CKerasDepthMap::Layer_19() {
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 49152;
+  conf.output_buf.offs = 0;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -1523,7 +1490,6 @@ void CKerasDepthMap::Layer_19() {
   //RUN : 0
   //--------------------------------------------------
   //->: upcnv6
-  //->: upcnv6_BatchNorm
   //->: upcnv6_BatchNorm
   //->: activation_17
   conf.run[0].m = 512;  // Output Channels
@@ -1547,9 +1513,10 @@ void CKerasDepthMap::Layer_19() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(19);
+  layer.name = "upcnv6";
   layer.type = LT_CONV;
   layer.input_offs = 147456;
-  layer.output_offs = 49152;
+  layer.output_offs = 0;
   layer.output_size = 49152;
   layer.input_dim[0] = 12;
   layer.input_dim[1] = 4;
@@ -1568,9 +1535,10 @@ void CKerasDepthMap::Layer_19() {
 //	->: concatenate_2
 void CKerasDepthMap::Layer_20() {
   fpga_layer& layer = get_layer(20);
+  layer.name = "concatenate_2";
   layer.type = LT_CONCAT;
-  layer.input_offs = 49152;
-  layer.output_offs = 49152;
+  layer.input_offs = 0;
+  layer.output_offs = 0;
   layer.output_size = 98304;
   layer.input_dim[0] = 12;
   layer.input_dim[1] = 4;
@@ -1588,10 +1556,8 @@ void CKerasDepthMap::Layer_20() {
 //Layer_21: Convolution Layer
 //  ->: icnv6
 //  ->: icnv6_BatchNorm
-//  ->: icnv6_BatchNorm
 //  ->: activation_18
 void CKerasDepthMap::Layer_21() {
-  get_layer(21).name = "icnv6, icnv6_BatchNorm, icnv6_BatchNorm, activation_18";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(21).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -1605,11 +1571,11 @@ void CKerasDepthMap::Layer_21() {
   conf.z = 1;  // Input Depth
   conf.c = 1024;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 49152;
+  conf.input_buf.offs = 0;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 0;
+  conf.output_buf.offs = 5879808;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -1621,7 +1587,6 @@ void CKerasDepthMap::Layer_21() {
   //RUN : 0
   //--------------------------------------------------
   //->: icnv6
-  //->: icnv6_BatchNorm
   //->: icnv6_BatchNorm
   //->: activation_18
   conf.run[0].m = 512;  // Output Channels
@@ -1645,9 +1610,10 @@ void CKerasDepthMap::Layer_21() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(21);
+  layer.name = "icnv6";
   layer.type = LT_CONV;
-  layer.input_offs = 49152;
-  layer.output_offs = 0;
+  layer.input_offs = 0;
+  layer.output_offs = 5879808;
   layer.output_size = 49152;
   layer.input_dim[0] = 12;
   layer.input_dim[1] = 4;
@@ -1659,13 +1625,12 @@ void CKerasDepthMap::Layer_21() {
   layer.output_dim_size = 3;
   layer.is_output = false;
   layer.is_f32_output = false;
-  layer.is_input_hw_layout = false;
+  layer.is_input_hw_layout = true;
 }//end of  Layer_21
 
 //Layer_22: Convolution Layer
 //  ->: up_sampling2d_3
 void CKerasDepthMap::Layer_22() {
-  get_layer(22).name = "up_sampling2d_3";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(22).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -1679,11 +1644,11 @@ void CKerasDepthMap::Layer_22() {
   conf.z = 1;  // Input Depth
   conf.c = 512;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 0;
+  conf.input_buf.offs = 5879808;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 786432;
+  conf.output_buf.offs = 0;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -1716,9 +1681,10 @@ void CKerasDepthMap::Layer_22() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(22);
+  layer.name = "up_sampling2d_3";
   layer.type = LT_CONV;
-  layer.input_offs = 0;
-  layer.output_offs = 786432;
+  layer.input_offs = 5879808;
+  layer.output_offs = 0;
   layer.output_size = 196608;
   layer.input_dim[0] = 12;
   layer.input_dim[1] = 4;
@@ -1736,10 +1702,8 @@ void CKerasDepthMap::Layer_22() {
 //Layer_23: Convolution Layer
 //  ->: upcnv5
 //  ->: upcnv5_BatchNorm
-//  ->: upcnv5_BatchNorm
 //  ->: activation_19
 void CKerasDepthMap::Layer_23() {
-  get_layer(23).name = "upcnv5, upcnv5_BatchNorm, upcnv5_BatchNorm, activation_19";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(23).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -1753,11 +1717,11 @@ void CKerasDepthMap::Layer_23() {
   conf.z = 1;  // Input Depth
   conf.c = 512;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 786432;
+  conf.input_buf.offs = 0;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 589824;
+  conf.output_buf.offs = 5584896;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -1769,7 +1733,6 @@ void CKerasDepthMap::Layer_23() {
   //RUN : 0
   //--------------------------------------------------
   //->: upcnv5
-  //->: upcnv5_BatchNorm
   //->: upcnv5_BatchNorm
   //->: activation_19
   conf.run[0].m = 256;  // Output Channels
@@ -1793,9 +1756,10 @@ void CKerasDepthMap::Layer_23() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(23);
+  layer.name = "upcnv5";
   layer.type = LT_CONV;
-  layer.input_offs = 786432;
-  layer.output_offs = 589824;
+  layer.input_offs = 0;
+  layer.output_offs = 5584896;
   layer.output_size = 98304;
   layer.input_dim[0] = 24;
   layer.input_dim[1] = 8;
@@ -1814,9 +1778,10 @@ void CKerasDepthMap::Layer_23() {
 //	->: concatenate_3
 void CKerasDepthMap::Layer_24() {
   fpga_layer& layer = get_layer(24);
+  layer.name = "concatenate_3";
   layer.type = LT_CONCAT;
-  layer.input_offs = 589824;
-  layer.output_offs = 589824;
+  layer.input_offs = 5584896;
+  layer.output_offs = 5584896;
   layer.output_size = 196608;
   layer.input_dim[0] = 24;
   layer.input_dim[1] = 8;
@@ -1834,10 +1799,8 @@ void CKerasDepthMap::Layer_24() {
 //Layer_25: Convolution Layer
 //  ->: icnv5
 //  ->: icnv5_BatchNorm
-//  ->: icnv5_BatchNorm
 //  ->: activation_20
 void CKerasDepthMap::Layer_25() {
-  get_layer(25).name = "icnv5, icnv5_BatchNorm, icnv5_BatchNorm, activation_20";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(25).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -1851,7 +1814,7 @@ void CKerasDepthMap::Layer_25() {
   conf.z = 1;  // Input Depth
   conf.c = 512;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 589824;
+  conf.input_buf.offs = 5584896;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
@@ -1867,7 +1830,6 @@ void CKerasDepthMap::Layer_25() {
   //RUN : 0
   //--------------------------------------------------
   //->: icnv5
-  //->: icnv5_BatchNorm
   //->: icnv5_BatchNorm
   //->: activation_20
   conf.run[0].m = 256;  // Output Channels
@@ -1891,8 +1853,9 @@ void CKerasDepthMap::Layer_25() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(25);
+  layer.name = "icnv5";
   layer.type = LT_CONV;
-  layer.input_offs = 589824;
+  layer.input_offs = 5584896;
   layer.output_offs = 0;
   layer.output_size = 98304;
   layer.input_dim[0] = 24;
@@ -1905,13 +1868,12 @@ void CKerasDepthMap::Layer_25() {
   layer.output_dim_size = 3;
   layer.is_output = false;
   layer.is_f32_output = false;
-  layer.is_input_hw_layout = false;
+  layer.is_input_hw_layout = true;
 }//end of  Layer_25
 
 //Layer_26: Convolution Layer
 //  ->: up_sampling2d_4
 void CKerasDepthMap::Layer_26() {
-  get_layer(26).name = "up_sampling2d_4";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(26).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -1929,7 +1891,7 @@ void CKerasDepthMap::Layer_26() {
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 589824;
+  conf.output_buf.offs = 5584896;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -1962,9 +1924,10 @@ void CKerasDepthMap::Layer_26() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(26);
+  layer.name = "up_sampling2d_4";
   layer.type = LT_CONV;
   layer.input_offs = 0;
-  layer.output_offs = 589824;
+  layer.output_offs = 5584896;
   layer.output_size = 393216;
   layer.input_dim[0] = 24;
   layer.input_dim[1] = 8;
@@ -1982,10 +1945,8 @@ void CKerasDepthMap::Layer_26() {
 //Layer_27: Convolution Layer
 //  ->: upcnv4
 //  ->: upcnv4_BatchNorm
-//  ->: upcnv4_BatchNorm
 //  ->: activation_21
 void CKerasDepthMap::Layer_27() {
-  get_layer(27).name = "upcnv4, upcnv4_BatchNorm, upcnv4_BatchNorm, activation_21";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(27).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -1999,11 +1960,11 @@ void CKerasDepthMap::Layer_27() {
   conf.z = 1;  // Input Depth
   conf.c = 256;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 589824;
+  conf.input_buf.offs = 5584896;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 196608;
+  conf.output_buf.offs = 199680;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -2015,7 +1976,6 @@ void CKerasDepthMap::Layer_27() {
   //RUN : 0
   //--------------------------------------------------
   //->: upcnv4
-  //->: upcnv4_BatchNorm
   //->: upcnv4_BatchNorm
   //->: activation_21
   conf.run[0].m = 128;  // Output Channels
@@ -2039,9 +1999,10 @@ void CKerasDepthMap::Layer_27() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(27);
+  layer.name = "upcnv4";
   layer.type = LT_CONV;
-  layer.input_offs = 589824;
-  layer.output_offs = 196608;
+  layer.input_offs = 5584896;
+  layer.output_offs = 199680;
   layer.output_size = 196608;
   layer.input_dim[0] = 48;
   layer.input_dim[1] = 16;
@@ -2060,9 +2021,10 @@ void CKerasDepthMap::Layer_27() {
 //	->: concatenate_4
 void CKerasDepthMap::Layer_28() {
   fpga_layer& layer = get_layer(28);
+  layer.name = "concatenate_4";
   layer.type = LT_CONCAT;
-  layer.input_offs = 196608;
-  layer.output_offs = 196608;
+  layer.input_offs = 199680;
+  layer.output_offs = 199680;
   layer.output_size = 393216;
   layer.input_dim[0] = 48;
   layer.input_dim[1] = 16;
@@ -2080,10 +2042,8 @@ void CKerasDepthMap::Layer_28() {
 //Layer_29: Convolution Layer
 //  ->: icnv4
 //  ->: icnv4_BatchNorm
-//  ->: icnv4_BatchNorm
 //  ->: activation_22
 void CKerasDepthMap::Layer_29() {
-  get_layer(29).name = "icnv4, icnv4_BatchNorm, icnv4_BatchNorm, activation_22";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(29).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -2097,11 +2057,11 @@ void CKerasDepthMap::Layer_29() {
   conf.z = 1;  // Input Depth
   conf.c = 256;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 196608;
+  conf.input_buf.offs = 199680;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 0;
+  conf.output_buf.offs = 3072;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -2113,7 +2073,6 @@ void CKerasDepthMap::Layer_29() {
   //RUN : 0
   //--------------------------------------------------
   //->: icnv4
-  //->: icnv4_BatchNorm
   //->: icnv4_BatchNorm
   //->: activation_22
   conf.run[0].m = 128;  // Output Channels
@@ -2137,9 +2096,10 @@ void CKerasDepthMap::Layer_29() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(29);
+  layer.name = "icnv4";
   layer.type = LT_CONV;
-  layer.input_offs = 196608;
-  layer.output_offs = 0;
+  layer.input_offs = 199680;
+  layer.output_offs = 3072;
   layer.output_size = 196608;
   layer.input_dim[0] = 48;
   layer.input_dim[1] = 16;
@@ -2151,13 +2111,12 @@ void CKerasDepthMap::Layer_29() {
   layer.output_dim_size = 3;
   layer.is_output = false;
   layer.is_f32_output = false;
-  layer.is_input_hw_layout = false;
+  layer.is_input_hw_layout = true;
 }//end of  Layer_29
 
 //Layer_30: Convolution Layer
 //  ->: up_sampling2d_6
 void CKerasDepthMap::Layer_30() {
-  get_layer(30).name = "up_sampling2d_6";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(30).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -2171,11 +2130,11 @@ void CKerasDepthMap::Layer_30() {
   conf.z = 1;  // Input Depth
   conf.c = 128;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 0;
+  conf.input_buf.offs = 3072;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 196608;
+  conf.output_buf.offs = 5584896;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -2208,9 +2167,10 @@ void CKerasDepthMap::Layer_30() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(30);
+  layer.name = "up_sampling2d_6";
   layer.type = LT_CONV;
-  layer.input_offs = 0;
-  layer.output_offs = 196608;
+  layer.input_offs = 3072;
+  layer.output_offs = 5584896;
   layer.output_size = 786432;
   layer.input_dim[0] = 48;
   layer.input_dim[1] = 16;
@@ -2228,10 +2188,8 @@ void CKerasDepthMap::Layer_30() {
 //Layer_31: Convolution Layer
 //  ->: upcnv3
 //  ->: upcnv3_BatchNorm
-//  ->: upcnv3_BatchNorm
 //  ->: activation_24
 void CKerasDepthMap::Layer_31() {
-  get_layer(31).name = "upcnv3, upcnv3_BatchNorm, upcnv3_BatchNorm, activation_24";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(31).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -2245,11 +2203,11 @@ void CKerasDepthMap::Layer_31() {
   conf.z = 1;  // Input Depth
   conf.c = 128;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 196608;
+  conf.input_buf.offs = 5584896;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 2678784;
+  conf.output_buf.offs = 4005888;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -2261,7 +2219,6 @@ void CKerasDepthMap::Layer_31() {
   //RUN : 0
   //--------------------------------------------------
   //->: upcnv3
-  //->: upcnv3_BatchNorm
   //->: upcnv3_BatchNorm
   //->: activation_24
   conf.run[0].m = 64;  // Output Channels
@@ -2285,9 +2242,10 @@ void CKerasDepthMap::Layer_31() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(31);
+  layer.name = "upcnv3";
   layer.type = LT_CONV;
-  layer.input_offs = 196608;
-  layer.output_offs = 2678784;
+  layer.input_offs = 5584896;
+  layer.output_offs = 4005888;
   layer.output_size = 393216;
   layer.input_dim[0] = 96;
   layer.input_dim[1] = 32;
@@ -2306,7 +2264,6 @@ void CKerasDepthMap::Layer_31() {
 //  ->: disp4
 //  ->: activation_23
 void CKerasDepthMap::Layer_32() {
-  get_layer(32).name = "disp4, activation_23";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(32).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -2320,11 +2277,11 @@ void CKerasDepthMap::Layer_32() {
   conf.z = 1;  // Input Depth
   conf.c = 128;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 0;
+  conf.input_buf.offs = 3072;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 196608;
+  conf.output_buf.offs = 1536;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -2358,9 +2315,10 @@ void CKerasDepthMap::Layer_32() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(32);
+  layer.name = "disp4";
   layer.type = LT_CONV;
-  layer.input_offs = 0;
-  layer.output_offs = 196608;
+  layer.input_offs = 3072;
+  layer.output_offs = 1536;
   layer.output_size = 1536;
   layer.input_dim[0] = 48;
   layer.input_dim[1] = 16;
@@ -2378,7 +2336,6 @@ void CKerasDepthMap::Layer_32() {
 //Layer_33: Convolution Layer
 //  ->: depthwise_conv2d_1
 void CKerasDepthMap::Layer_33() {
-  get_layer(33).name = "depthwise_conv2d_1";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(33).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -2392,7 +2349,7 @@ void CKerasDepthMap::Layer_33() {
   conf.z = 1;  // Input Depth
   conf.c = 1;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 196608;
+  conf.input_buf.offs = 1536;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
@@ -2429,8 +2386,9 @@ void CKerasDepthMap::Layer_33() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(33);
+  layer.name = "depthwise_conv2d_1";
   layer.type = LT_CONV;
-  layer.input_offs = 196608;
+  layer.input_offs = 1536;
   layer.output_offs = 0;
   layer.output_size = 1536;
   layer.input_dim[0] = 48;
@@ -2449,7 +2407,6 @@ void CKerasDepthMap::Layer_33() {
 //Layer_34: Convolution Layer
 //  ->: up_sampling2d_5
 void CKerasDepthMap::Layer_34() {
-  get_layer(34).name = "up_sampling2d_5";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(34).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -2467,7 +2424,7 @@ void CKerasDepthMap::Layer_34() {
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 3465216;
+  conf.output_buf.offs = 4792320;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -2500,9 +2457,10 @@ void CKerasDepthMap::Layer_34() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(34);
+  layer.name = "up_sampling2d_5";
   layer.type = LT_CONV;
   layer.input_offs = 0;
-  layer.output_offs = 3465216;
+  layer.output_offs = 4792320;
   layer.output_size = 6144;
   layer.input_dim[0] = 48;
   layer.input_dim[1] = 16;
@@ -2521,9 +2479,10 @@ void CKerasDepthMap::Layer_34() {
 //	->: concatenate_5
 void CKerasDepthMap::Layer_35() {
   fpga_layer& layer = get_layer(35);
+  layer.name = "concatenate_5";
   layer.type = LT_CONCAT;
-  layer.input_offs = 2678784;
-  layer.output_offs = 2678784;
+  layer.input_offs = 4005888;
+  layer.output_offs = 4005888;
   layer.output_size = 792576;
   layer.input_dim[0] = 96;
   layer.input_dim[1] = 32;
@@ -2541,10 +2500,8 @@ void CKerasDepthMap::Layer_35() {
 //Layer_36: Convolution Layer
 //  ->: icnv3
 //  ->: icnv3_BatchNorm
-//  ->: icnv3_BatchNorm
 //  ->: activation_25
 void CKerasDepthMap::Layer_36() {
-  get_layer(36).name = "icnv3, icnv3_BatchNorm, icnv3_BatchNorm, activation_25";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(36).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -2558,11 +2515,11 @@ void CKerasDepthMap::Layer_36() {
   conf.z = 1;  // Input Depth
   conf.c = 129;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 2678784;
+  conf.input_buf.offs = 4005888;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 0;
+  conf.output_buf.offs = 12288;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -2574,7 +2531,6 @@ void CKerasDepthMap::Layer_36() {
   //RUN : 0
   //--------------------------------------------------
   //->: icnv3
-  //->: icnv3_BatchNorm
   //->: icnv3_BatchNorm
   //->: activation_25
   conf.run[0].m = 64;  // Output Channels
@@ -2598,9 +2554,10 @@ void CKerasDepthMap::Layer_36() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(36);
+  layer.name = "icnv3";
   layer.type = LT_CONV;
-  layer.input_offs = 2678784;
-  layer.output_offs = 0;
+  layer.input_offs = 4005888;
+  layer.output_offs = 12288;
   layer.output_size = 393216;
   layer.input_dim[0] = 96;
   layer.input_dim[1] = 32;
@@ -2612,13 +2569,12 @@ void CKerasDepthMap::Layer_36() {
   layer.output_dim_size = 3;
   layer.is_output = false;
   layer.is_f32_output = false;
-  layer.is_input_hw_layout = false;
+  layer.is_input_hw_layout = true;
 }//end of  Layer_36
 
 //Layer_37: Convolution Layer
 //  ->: up_sampling2d_8
 void CKerasDepthMap::Layer_37() {
-  get_layer(37).name = "up_sampling2d_8";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(37).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -2632,11 +2588,11 @@ void CKerasDepthMap::Layer_37() {
   conf.z = 1;  // Input Depth
   conf.c = 64;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 0;
+  conf.input_buf.offs = 12288;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 2678784;
+  conf.output_buf.offs = 4005888;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -2669,9 +2625,10 @@ void CKerasDepthMap::Layer_37() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(37);
+  layer.name = "up_sampling2d_8";
   layer.type = LT_CONV;
-  layer.input_offs = 0;
-  layer.output_offs = 2678784;
+  layer.input_offs = 12288;
+  layer.output_offs = 4005888;
   layer.output_size = 1572864;
   layer.input_dim[0] = 96;
   layer.input_dim[1] = 32;
@@ -2689,10 +2646,8 @@ void CKerasDepthMap::Layer_37() {
 //Layer_38: Convolution Layer
 //  ->: upcnv2
 //  ->: upcnv2_BatchNorm
-//  ->: upcnv2_BatchNorm
 //  ->: activation_27
 void CKerasDepthMap::Layer_38() {
-  get_layer(38).name = "upcnv2, upcnv2_BatchNorm, upcnv2_BatchNorm, activation_27";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(38).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -2706,11 +2661,11 @@ void CKerasDepthMap::Layer_38() {
   conf.z = 1;  // Input Depth
   conf.c = 64;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 2678784;
+  conf.input_buf.offs = 4005888;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 1081344;
+  conf.output_buf.offs = 835584;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -2722,7 +2677,6 @@ void CKerasDepthMap::Layer_38() {
   //RUN : 0
   //--------------------------------------------------
   //->: upcnv2
-  //->: upcnv2_BatchNorm
   //->: upcnv2_BatchNorm
   //->: activation_27
   conf.run[0].m = 32;  // Output Channels
@@ -2746,9 +2700,10 @@ void CKerasDepthMap::Layer_38() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(38);
+  layer.name = "upcnv2";
   layer.type = LT_CONV;
-  layer.input_offs = 2678784;
-  layer.output_offs = 1081344;
+  layer.input_offs = 4005888;
+  layer.output_offs = 835584;
   layer.output_size = 786432;
   layer.input_dim[0] = 192;
   layer.input_dim[1] = 64;
@@ -2767,7 +2722,6 @@ void CKerasDepthMap::Layer_38() {
 //  ->: disp3
 //  ->: activation_26
 void CKerasDepthMap::Layer_39() {
-  get_layer(39).name = "disp3, activation_26";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(39).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -2781,11 +2735,11 @@ void CKerasDepthMap::Layer_39() {
   conf.z = 1;  // Input Depth
   conf.c = 64;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 0;
+  conf.input_buf.offs = 12288;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 393216;
+  conf.output_buf.offs = 6144;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -2819,9 +2773,10 @@ void CKerasDepthMap::Layer_39() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(39);
+  layer.name = "disp3";
   layer.type = LT_CONV;
-  layer.input_offs = 0;
-  layer.output_offs = 393216;
+  layer.input_offs = 12288;
+  layer.output_offs = 6144;
   layer.output_size = 6144;
   layer.input_dim[0] = 96;
   layer.input_dim[1] = 32;
@@ -2839,7 +2794,6 @@ void CKerasDepthMap::Layer_39() {
 //Layer_40: Convolution Layer
 //  ->: depthwise_conv2d_2
 void CKerasDepthMap::Layer_40() {
-  get_layer(40).name = "depthwise_conv2d_2";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(40).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -2853,7 +2807,7 @@ void CKerasDepthMap::Layer_40() {
   conf.z = 1;  // Input Depth
   conf.c = 1;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 393216;
+  conf.input_buf.offs = 6144;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
@@ -2890,8 +2844,9 @@ void CKerasDepthMap::Layer_40() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(40);
+  layer.name = "depthwise_conv2d_2";
   layer.type = LT_CONV;
-  layer.input_offs = 393216;
+  layer.input_offs = 6144;
   layer.output_offs = 0;
   layer.output_size = 6144;
   layer.input_dim[0] = 96;
@@ -2910,7 +2865,6 @@ void CKerasDepthMap::Layer_40() {
 //Layer_41: Convolution Layer
 //  ->: up_sampling2d_7
 void CKerasDepthMap::Layer_41() {
-  get_layer(41).name = "up_sampling2d_7";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(41).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -2928,7 +2882,7 @@ void CKerasDepthMap::Layer_41() {
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 2654208;
+  conf.output_buf.offs = 2408448;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -2961,9 +2915,10 @@ void CKerasDepthMap::Layer_41() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(41);
+  layer.name = "up_sampling2d_7";
   layer.type = LT_CONV;
   layer.input_offs = 0;
-  layer.output_offs = 2654208;
+  layer.output_offs = 2408448;
   layer.output_size = 24576;
   layer.input_dim[0] = 96;
   layer.input_dim[1] = 32;
@@ -2982,9 +2937,10 @@ void CKerasDepthMap::Layer_41() {
 //	->: concatenate_6
 void CKerasDepthMap::Layer_42() {
   fpga_layer& layer = get_layer(42);
+  layer.name = "concatenate_6";
   layer.type = LT_CONCAT;
-  layer.input_offs = 1081344;
-  layer.output_offs = 1081344;
+  layer.input_offs = 835584;
+  layer.output_offs = 835584;
   layer.output_size = 1597440;
   layer.input_dim[0] = 192;
   layer.input_dim[1] = 64;
@@ -3002,10 +2958,8 @@ void CKerasDepthMap::Layer_42() {
 //Layer_43: Convolution Layer
 //  ->: icnv2
 //  ->: icnv2_BatchNorm
-//  ->: icnv2_BatchNorm
 //  ->: activation_28
 void CKerasDepthMap::Layer_43() {
-  get_layer(43).name = "icnv2, icnv2_BatchNorm, icnv2_BatchNorm, activation_28";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(43).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -3019,11 +2973,11 @@ void CKerasDepthMap::Layer_43() {
   conf.z = 1;  // Input Depth
   conf.c = 65;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 1081344;
+  conf.input_buf.offs = 835584;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 0;
+  conf.output_buf.offs = 49152;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -3035,7 +2989,6 @@ void CKerasDepthMap::Layer_43() {
   //RUN : 0
   //--------------------------------------------------
   //->: icnv2
-  //->: icnv2_BatchNorm
   //->: icnv2_BatchNorm
   //->: activation_28
   conf.run[0].m = 32;  // Output Channels
@@ -3059,9 +3012,10 @@ void CKerasDepthMap::Layer_43() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(43);
+  layer.name = "icnv2";
   layer.type = LT_CONV;
-  layer.input_offs = 1081344;
-  layer.output_offs = 0;
+  layer.input_offs = 835584;
+  layer.output_offs = 49152;
   layer.output_size = 786432;
   layer.input_dim[0] = 192;
   layer.input_dim[1] = 64;
@@ -3073,13 +3027,12 @@ void CKerasDepthMap::Layer_43() {
   layer.output_dim_size = 3;
   layer.is_output = false;
   layer.is_f32_output = false;
-  layer.is_input_hw_layout = false;
+  layer.is_input_hw_layout = true;
 }//end of  Layer_43
 
 //Layer_44: Convolution Layer
 //  ->: up_sampling2d_10
 void CKerasDepthMap::Layer_44() {
-  get_layer(44).name = "up_sampling2d_10";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(44).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -3093,11 +3046,11 @@ void CKerasDepthMap::Layer_44() {
   conf.z = 1;  // Input Depth
   conf.c = 32;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 0;
+  conf.input_buf.offs = 49152;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 786432;
+  conf.output_buf.offs = 5013504;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -3130,9 +3083,10 @@ void CKerasDepthMap::Layer_44() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(44);
+  layer.name = "up_sampling2d_10";
   layer.type = LT_CONV;
-  layer.input_offs = 0;
-  layer.output_offs = 786432;
+  layer.input_offs = 49152;
+  layer.output_offs = 5013504;
   layer.output_size = 3145728;
   layer.input_dim[0] = 192;
   layer.input_dim[1] = 64;
@@ -3150,10 +3104,8 @@ void CKerasDepthMap::Layer_44() {
 //Layer_45: Convolution Layer
 //  ->: upcnv1
 //  ->: upcnv1_BatchNorm
-//  ->: upcnv1_BatchNorm
 //  ->: activation_30
 void CKerasDepthMap::Layer_45() {
-  get_layer(45).name = "upcnv1, upcnv1_BatchNorm, upcnv1_BatchNorm, activation_30";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(45).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -3167,11 +3119,11 @@ void CKerasDepthMap::Layer_45() {
   conf.z = 1;  // Input Depth
   conf.c = 32;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 786432;
+  conf.input_buf.offs = 5013504;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 3932160;
+  conf.output_buf.offs = 1769472;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -3183,7 +3135,6 @@ void CKerasDepthMap::Layer_45() {
   //RUN : 0
   //--------------------------------------------------
   //->: upcnv1
-  //->: upcnv1_BatchNorm
   //->: upcnv1_BatchNorm
   //->: activation_30
   conf.run[0].m = 16;  // Output Channels
@@ -3207,9 +3158,10 @@ void CKerasDepthMap::Layer_45() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(45);
+  layer.name = "upcnv1";
   layer.type = LT_CONV;
-  layer.input_offs = 786432;
-  layer.output_offs = 3932160;
+  layer.input_offs = 5013504;
+  layer.output_offs = 1769472;
   layer.output_size = 1572864;
   layer.input_dim[0] = 384;
   layer.input_dim[1] = 128;
@@ -3228,7 +3180,6 @@ void CKerasDepthMap::Layer_45() {
 //  ->: disp2
 //  ->: activation_29
 void CKerasDepthMap::Layer_46() {
-  get_layer(46).name = "disp2, activation_29";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(46).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -3242,11 +3193,11 @@ void CKerasDepthMap::Layer_46() {
   conf.z = 1;  // Input Depth
   conf.c = 32;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 0;
+  conf.input_buf.offs = 49152;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 786432;
+  conf.output_buf.offs = 24576;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -3280,9 +3231,10 @@ void CKerasDepthMap::Layer_46() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(46);
+  layer.name = "disp2";
   layer.type = LT_CONV;
-  layer.input_offs = 0;
-  layer.output_offs = 786432;
+  layer.input_offs = 49152;
+  layer.output_offs = 24576;
   layer.output_size = 24576;
   layer.input_dim[0] = 192;
   layer.input_dim[1] = 64;
@@ -3300,7 +3252,6 @@ void CKerasDepthMap::Layer_46() {
 //Layer_47: Convolution Layer
 //  ->: depthwise_conv2d_3
 void CKerasDepthMap::Layer_47() {
-  get_layer(47).name = "depthwise_conv2d_3";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(47).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -3314,7 +3265,7 @@ void CKerasDepthMap::Layer_47() {
   conf.z = 1;  // Input Depth
   conf.c = 1;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 786432;
+  conf.input_buf.offs = 24576;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
@@ -3351,8 +3302,9 @@ void CKerasDepthMap::Layer_47() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(47);
+  layer.name = "depthwise_conv2d_3";
   layer.type = LT_CONV;
-  layer.input_offs = 786432;
+  layer.input_offs = 24576;
   layer.output_offs = 0;
   layer.output_size = 24576;
   layer.input_dim[0] = 192;
@@ -3371,7 +3323,6 @@ void CKerasDepthMap::Layer_47() {
 //Layer_48: Convolution Layer
 //  ->: up_sampling2d_9
 void CKerasDepthMap::Layer_48() {
-  get_layer(48).name = "up_sampling2d_9";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(48).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -3389,7 +3340,7 @@ void CKerasDepthMap::Layer_48() {
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 5505024;
+  conf.output_buf.offs = 3342336;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -3422,9 +3373,10 @@ void CKerasDepthMap::Layer_48() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(48);
+  layer.name = "up_sampling2d_9";
   layer.type = LT_CONV;
   layer.input_offs = 0;
-  layer.output_offs = 5505024;
+  layer.output_offs = 3342336;
   layer.output_size = 98304;
   layer.input_dim[0] = 192;
   layer.input_dim[1] = 64;
@@ -3443,9 +3395,10 @@ void CKerasDepthMap::Layer_48() {
 //	->: concatenate_7
 void CKerasDepthMap::Layer_49() {
   fpga_layer& layer = get_layer(49);
+  layer.name = "concatenate_7";
   layer.type = LT_CONCAT;
-  layer.input_offs = 3932160;
-  layer.output_offs = 3932160;
+  layer.input_offs = 1769472;
+  layer.output_offs = 1769472;
   layer.output_size = 1671168;
   layer.input_dim[0] = 384;
   layer.input_dim[1] = 128;
@@ -3463,10 +3416,8 @@ void CKerasDepthMap::Layer_49() {
 //Layer_50: Convolution Layer
 //  ->: icnv1
 //  ->: icnv1_BatchNorm
-//  ->: icnv1_BatchNorm
 //  ->: activation_31
 void CKerasDepthMap::Layer_50() {
-  get_layer(50).name = "icnv1, icnv1_BatchNorm, icnv1_BatchNorm, activation_31";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(50).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -3480,11 +3431,11 @@ void CKerasDepthMap::Layer_50() {
   conf.z = 1;  // Input Depth
   conf.c = 17;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 3932160;
+  conf.input_buf.offs = 1769472;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 0;
+  conf.output_buf.offs = 196608;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -3496,7 +3447,6 @@ void CKerasDepthMap::Layer_50() {
   //RUN : 0
   //--------------------------------------------------
   //->: icnv1
-  //->: icnv1_BatchNorm
   //->: icnv1_BatchNorm
   //->: activation_31
   conf.run[0].m = 16;  // Output Channels
@@ -3520,9 +3470,10 @@ void CKerasDepthMap::Layer_50() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(50);
+  layer.name = "icnv1";
   layer.type = LT_CONV;
-  layer.input_offs = 3932160;
-  layer.output_offs = 0;
+  layer.input_offs = 1769472;
+  layer.output_offs = 196608;
   layer.output_size = 1572864;
   layer.input_dim[0] = 384;
   layer.input_dim[1] = 128;
@@ -3534,14 +3485,13 @@ void CKerasDepthMap::Layer_50() {
   layer.output_dim_size = 3;
   layer.is_output = false;
   layer.is_f32_output = false;
-  layer.is_input_hw_layout = false;
+  layer.is_input_hw_layout = true;
 }//end of  Layer_50
 
 //Layer_51: Convolution Layer
 //  ->: disp1
 //  ->: activation_32
 void CKerasDepthMap::Layer_51() {
-  get_layer(51).name = "disp1, activation_32";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(51).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -3555,11 +3505,11 @@ void CKerasDepthMap::Layer_51() {
   conf.z = 1;  // Input Depth
   conf.c = 16;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 0;
+  conf.input_buf.offs = 196608;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
-  conf.output_buf.offs = 1572864;
+  conf.output_buf.offs = 98304;
 
   conf.eltwise_buf.mem = NULL;
   conf.eltwise_buf.offs = 0;  // Input byte address for elementwise add (0 = UBUF Input Buffer)
@@ -3593,9 +3543,10 @@ void CKerasDepthMap::Layer_51() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(51);
+  layer.name = "disp1";
   layer.type = LT_CONV;
-  layer.input_offs = 0;
-  layer.output_offs = 1572864;
+  layer.input_offs = 196608;
+  layer.output_offs = 98304;
   layer.output_size = 98304;
   layer.input_dim[0] = 384;
   layer.input_dim[1] = 128;
@@ -3613,7 +3564,6 @@ void CKerasDepthMap::Layer_51() {
 //Layer_52: Convolution Layer
 //  ->: depthwise_conv2d_4
 void CKerasDepthMap::Layer_52() {
-  get_layer(52).name = "depthwise_conv2d_4";
   dmp_dv_cmdraw_conv_v0& conf = get_layer(52).conv_conf;
   conf.header.size = sizeof(conf);
   conf.header.device_type = DMP_DV_DEV_CONV;
@@ -3627,7 +3577,7 @@ void CKerasDepthMap::Layer_52() {
   conf.z = 1;  // Input Depth
   conf.c = 1;  // Input Channels
   conf.input_buf.mem = io_mem_;
-  conf.input_buf.offs = 1572864;
+  conf.input_buf.offs = 98304;
 
   // Output Configuration:
   conf.output_buf.mem = io_mem_;
@@ -3664,18 +3614,17 @@ void CKerasDepthMap::Layer_52() {
   conf.run[0].lrn = 0x0;  // [0] : 1 = LRN enable, 0 = LRN disable, [1] : 1 = incl. power func, 0 = excl., [8:11] = x^2 scale factor log2
 
   fpga_layer& layer = get_layer(52);
+  layer.name = "dmp_conv_flat_0";
   layer.type = LT_CONV;
-  layer.input_offs = 1572864;
+  layer.input_offs = 98304;
   layer.output_offs = 0;
   layer.output_size = 98304;
   layer.input_dim[0] = 384;
   layer.input_dim[1] = 128;
   layer.input_dim[2] = 1;
   layer.input_dim_size = 3;
-  layer.output_dim[0] = 384;
-  layer.output_dim[1] = 128;
-  layer.output_dim[2] = 1;
-  layer.output_dim_size = 3;
+  layer.output_dim[0] = 49152;
+  layer.output_dim_size = 1;
   layer.is_output = true;
   layer.is_f32_output = false;
   layer.is_input_hw_layout = true;

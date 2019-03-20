@@ -480,7 +480,7 @@ digraph G{
         style = filled;
         color = lightgrey;
         node[style = filled,color = white];
-        depthwise_conv2d_4
+        depthwise_conv2d_4->dmp_conv_flat_0
         label = "Layer_52"
     }
     disp1->depthwise_conv2d_4

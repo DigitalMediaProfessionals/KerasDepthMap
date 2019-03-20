@@ -119,7 +119,7 @@ In the following section, one can find the conversion results of the network.In 
 | 50-0 | icnv1 | Convolution | (384, 128, 17) | (384, 128, 16) | (3, 3) | 6944 | 120324096 | 120324096 |
 | 51 | FPGA-Layer | Convolution | (384, 128, 16) | (384, 128, 1) | - | - | - | - |
 | 51-0 | disp1 | Convolution | (384, 128, 16) | (384, 128, 1) | (3, 3) | 304 | 7077888 | 7077888 |
-| 52 | FPGA-Layer | Convolution | (384, 128, 1) | (384, 128, 1) | - | - | - | - |
+| 52 | FPGA-Layer | Convolution | (384, 128, 1) | (49152,) | - | - | - | - |
 | 52-0 | depthwise_conv2d_4 | Convolution | (384, 128, 1) | (384, 128, 1) | (1, 1) | 160 | 49152 | 49152 |
 | SUM | - | - | - | - | - | - | 4328685312 | 4328685312 |
 
