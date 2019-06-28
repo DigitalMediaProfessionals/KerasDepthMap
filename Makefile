@@ -1,7 +1,7 @@
 include ../../env.mk
 
-INC = -I../../dv-user-driver/include -I../common/include -I/usr/include/agg2 `freetype-config --cflags`
-LIB = -L../../dv-user-driver -ldmpdv -L../common/lib -ldv700_util -lagg -lfreetype $(shell pkg-config --cflags --libs opencv)
+INC = -I../common/include -I/usr/include/agg2 `freetype-config --cflags`
+LIB = -ldmpdv -L../common/lib -ldv700_util -lagg -lfreetype $(shell pkg-config --cflags --libs opencv)
 
 CFLAGS = -pthread -std=c++11 $(OPT) -Wall -Werror -c $(INC)
 LFLAGS = -pthread $(LIB)
