@@ -138,7 +138,7 @@ int main(int argc, char** argv) {
     }
 
     // Run network in HW
-    memcpy(network.get_network_input_addr_cpu(), imgProc, IMAGE_W * IMAGE_H * 6);
+    memcpy(network.get_network_input_addr_cpu(), imgProc, sizeof(imgProc));
     network.RunNetwork();
 
     // Handle output from HW
